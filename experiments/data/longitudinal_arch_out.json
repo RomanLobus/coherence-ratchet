@@ -1,0 +1,202 @@
+{
+ "httpie": {
+  "repo": "httpie",
+  "commits_total": 1637,
+  "first": "2012-02-25",
+  "last": "2024-12-17",
+  "points": [
+   {
+    "date": "2012-02-25",
+    "sha": "b966efa1",
+    "mods": 3,
+    "cycle_ratio": 0.0,
+    "coupling": 0.0,
+    "instab": 0.0,
+    "A": 0.0,
+    "D": 0.0,
+    "dmods": 0,
+    "pain": 0.0
+   },
+   {
+    "date": "2012-07-04",
+    "sha": "6ab03b21",
+    "mods": 7,
+    "cycle_ratio": 0.0,
+    "coupling": 1.5714,
+    "instab": 0.369,
+    "A": 0.0,
+    "D": 0.7917,
+    "dmods": 4,
+    "pain": 0.5
+   },
+   {
+    "date": "2012-08-18",
+    "sha": "50810e5b",
+    "mods": 11,
+    "cycle_ratio": 0.0,
+    "coupling": 1.5455,
+    "instab": 0.4279,
+    "A": 0.0,
+    "D": 0.8133,
+    "dmods": 5,
+    "pain": 0.6
+   },
+   {
+    "date": "2013-05-14",
+    "sha": "6e848b32",
+    "mods": 14,
+    "cycle_ratio": 0.0,
+    "coupling": 2.1429,
+    "instab": 0.4652,
+    "A": 0.0,
+    "D": 0.6036,
+    "dmods": 8,
+    "pain": 0.25
+   },
+   {
+    "date": "2014-04-26",
+    "sha": "609950f3",
+    "mods": 18,
+    "cycle_ratio": 0.1111,
+    "coupling": 2.1667,
+    "instab": 0.4386,
+    "A": 0.0,
+    "D": 0.6083,
+    "dmods": 12,
+    "pain": 0.3333
+   },
+   {
+    "date": "2015-02-16",
+    "sha": "24957e3b",
+    "mods": 25,
+    "cycle_ratio": 0.32,
+    "coupling": 2.24,
+    "instab": 0.4968,
+    "A": 0.0,
+    "D": 0.5485,
+    "dmods": 18,
+    "pain": 0.2222
+   },
+   {
+    "date": "2016-03-02",
+    "sha": "c2dae62a",
+    "mods": 25,
+    "cycle_ratio": 0.32,
+    "coupling": 2.28,
+    "instab": 0.5033,
+    "A": 0.0,
+    "D": 0.5402,
+    "dmods": 18,
+    "pain": 0.1667
+   },
+   {
+    "date": "2016-12-08",
+    "sha": "cc9083f5",
+    "mods": 24,
+    "cycle_ratio": 0.3333,
+    "coupling": 2.5833,
+    "instab": 0.5096,
+    "A": 0.0,
+    "D": 0.5141,
+    "dmods": 18,
+    "pain": 0.1667
+   },
+   {
+    "date": "2019-08-29",
+    "sha": "4d299a55",
+    "mods": 24,
+    "cycle_ratio": 0.3333,
+    "coupling": 2.5417,
+    "instab": 0.5005,
+    "A": 0.0,
+    "D": 0.4855,
+    "dmods": 17,
+    "pain": 0.1176
+   },
+   {
+    "date": "2020-01-12",
+    "sha": "4b524e6a",
+    "mods": 32,
+    "cycle_ratio": 0.2188,
+    "coupling": 2.3125,
+    "instab": 0.4393,
+    "A": 0.0,
+    "D": 0.5617,
+    "dmods": 22,
+    "pain": 0.2727
+   },
+   {
+    "date": "2020-08-15",
+    "sha": "6cd934d1",
+    "mods": 35,
+    "cycle_ratio": 0.0571,
+    "coupling": 2.2286,
+    "instab": 0.4255,
+    "A": 0.0,
+    "D": 0.5956,
+    "dmods": 22,
+    "pain": 0.3182
+   },
+   {
+    "date": "2021-06-15",
+    "sha": "07a03593",
+    "mods": 35,
+    "cycle_ratio": 0.0571,
+    "coupling": 2.2286,
+    "instab": 0.4248,
+    "A": 0.0,
+    "D": 0.6085,
+    "dmods": 24,
+    "pain": 0.3333
+   },
+   {
+    "date": "2021-10-06",
+    "sha": "ef4fa20c",
+    "mods": 41,
+    "cycle_ratio": 0.0488,
+    "coupling": 2.2683,
+    "instab": 0.4313,
+    "A": 0.0051,
+    "D": 0.5999,
+    "dmods": 28,
+    "pain": 0.3571
+   },
+   {
+    "date": "2022-01-12",
+    "sha": "00c859c5",
+    "mods": 53,
+    "cycle_ratio": 0.0377,
+    "coupling": 2.4717,
+    "instab": 0.4393,
+    "A": 0.0046,
+    "D": 0.5842,
+    "dmods": 31,
+    "pain": 0.3226
+   },
+   {
+    "date": "2022-04-16",
+    "sha": "d262181b",
+    "mods": 68,
+    "cycle_ratio": 0.1029,
+    "coupling": 2.6618,
+    "instab": 0.4531,
+    "A": 0.0038,
+    "D": 0.5698,
+    "dmods": 38,
+    "pain": 0.3421
+   },
+   {
+    "date": "2024-12-17",
+    "sha": "5b604c37",
+    "mods": 78,
+    "cycle_ratio": 0.1538,
+    "coupling": 2.6795,
+    "instab": 0.4583,
+    "A": 0.0035,
+    "D": 0.5931,
+    "dmods": 41,
+    "pain": 0.3415
+   }
+  ]
+ }
+}

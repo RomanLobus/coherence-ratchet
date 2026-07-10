@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: install
+        run: pip install -e .
+      - name: tests
+        run: python tests/run.py
+      - name: quickstart smoke (deterministic floor, offline)
+        run: |
+          coherence-ratchet measure playground/_states/03-loyalty/billing
+          coherence-ratchet selfmodel derive playground/_states/03-loyalty/billing --model /tmp/sm.json
+          coherence-ratchet selfmodel query "which sites compute retry?" --model /tmp/sm.json
+          coherence-ratchet init playground/_states/00-baseline/billing --budgets /tmp/b.json
+          if coherence-ratchet check playground/_states/03-loyalty/billing --budgets /tmp/b.json; then
+            echo "expected the ratchet to trip" && exit 1
+          fi
+          coherence-ratchet check playground/_states/03-loyalty/billing --budgets /tmp/b.json \
+            --accept --owner "billing-team" --trigger "smoke / never" --region "billing.loyalty" \
+            --ledger /tmp/ledger.jsonl
+          coherence-ratchet report --ledger /tmp/ledger.jsonl
+      - name: prove fixtures (REFUTED and PROVED paths)
+        run: |
+          F=_fixtures/consolidation
+          if coherence-ratchet prove "$F::variants.to_cents_half_up" "$F::variants.to_cents_half_even"; then
+            echo "expected REFUTED" && exit 1
+          fi
+          coherence-ratchet prove "$F::variants.retry_orig" "$F::variants.retry_faithful" --strategy $F/retry_strategy.py
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install build && python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

@@ -1,0 +1,13 @@
+{
+  "_comment": "Sanctioned-pattern catalogue the steward RATIFIES. The semantic gate clears a duplicate cluster only when it matches one of these patterns at quorum; everything else surfaces. With no catalogue the gate surfaces all duplication (the zero-false-clear default). Keep this small and honest — a pattern here means 'this duplication is intentional and must not be consolidated'.",
+  "patterns": [
+    {
+      "name": "http-verb-wrappers",
+      "description": "thin per-verb wrappers (get/post/put/delete/...) that each delegate to a single request(); intentional API symmetry, not fragmentation"
+    },
+    {
+      "name": "versioned-copies",
+      "description": "code deliberately duplicated per API/schema version and kept separate on purpose; must not be merged across versions"
+    }
+  ]
+}

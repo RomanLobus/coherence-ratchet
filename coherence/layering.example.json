@@ -1,0 +1,22 @@
+{
+  "_comment": "Declared layering spec the steward maintains. 'order' is high-to-low. The gate runs a free deterministic up-dependency check whenever 'order' + 'layer_of' are present. If 'responsibilities' are also given, it additionally runs the LLM semantic check (misplaced responsibility, e.g. a model doing I/O), constrained to these rules — never open-ended review.",
+  "order": ["handler", "service", "repository", "model", "util"],
+  "layer_of": {
+    "billing.api": "handler",
+    "billing.orders": "service",
+    "billing.exports": "service",
+    "billing.money": "util",
+    "billing.retry": "util",
+    "billing.paginate": "util"
+  },
+  "rules": [
+    "R1: a module may depend only on modules in a lower layer",
+    "R2: no module below 'service' may perform I/O (network, disk, email)",
+    "R3: 'util' modules must be single-purpose and hold no domain logic"
+  ],
+  "responsibilities": {
+    "billing.money": "currency rounding and conversion",
+    "billing.retry": "retry an operation with backoff",
+    "billing.paginate": "split a sequence into pages"
+  }
+}
