@@ -1,8 +1,8 @@
 # Changelog
 
 Output formats are frozen per minor version. Any change to what a command prints requires a minor
-bump, because the book reproduces this tool's output verbatim and a reader must be able to tell a
-book-tool disagreement from a defect. Install the version the book names.
+bump, because this tool's output is reproduced verbatim in published material and a reader must be
+able to tell a version gap from a defect. Pin the version you quote.
 
 ## 0.5.0 — 2026-08-13
 
@@ -13,17 +13,15 @@ match.
 
 ### Repository layout — breaking for anyone who cloned 0.1.0
 
-The published tree now matches the layout the book describes. The package moved from the clone root
-into `ratchet-mvp/`, and the formal lab and the enterprise seam lab are published beside it, so a
-single working directory reaches all three exactly as Appendix C states. Install is now
+The package moved from the clone root into `ratchet-mvp/`, so the formal lab and the enterprise seam
+lab can be published beside it and one working directory reaches all three. Install is now
 `pip install ./ratchet-mvp` from the clone root rather than `pip install -e .`, and the fixtures are
-under `ratchet-mvp/playground/`. At 0.1.0 the repository was flat, which made the book's own install
-block fail against the artefact it named. The import path is unchanged: `coherence_ratchet` is still
-the package and `coherence-ratchet` is still the command.
+under `ratchet-mvp/playground/`. The import path is unchanged: `coherence_ratchet` is still the
+package and `coherence-ratchet` is still the command.
 
 Two labs are published for the first time. `formal/` carries the bounded Dafny and TLA+ examples, and
-`enterprise-seam-lab/` carries the Python-to-TypeScript contract boundary. Both are cited by the book
-as shipping with the companion, and neither shipped at 0.1.0.
+`enterprise-seam-lab/` carries the Python-to-TypeScript contract boundary. Neither shipped at 0.1.0,
+and both are referenced by the write-ups in `experiments/`.
 
 `demo.py` measured the state directory rather than the package inside it. Under 0.1.0 that silently
 returned an all-zero snapshot; under this release's new refusal it raises, which is how the defect
@@ -381,8 +379,7 @@ The checkout-pricing fixture, the sync-marker contract for printed blocks, and t
 
 ## 0.1.0 — 2026-07-10
 
-First public release. The reference implementation as validated for the book *Coherence Debt:
-Keeping Software Worth Changing When AI Writes the Code*:
+First public release of the reference implementation:
 
 - `measure` / `init` / `check` — the deterministic floor: function-level duplication clusters,
   dependency cycles, coupling density, fan-in, connascence of shared literals, held against a

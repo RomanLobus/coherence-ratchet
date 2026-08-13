@@ -1,6 +1,6 @@
 # Quickstart: one honest pass through the method
 
-Run this from the companion-repository root, the directory the clone leaves you in:
+Run this from the repository root, the directory the clone leaves you in:
 
 ```sh
 python3 -m pip install ./ratchet-mvp
@@ -11,7 +11,7 @@ mkdir -p coherence
 
 `P` must point at the package directory itself. Pointed one level up, at the state directory, the tool refuses and names the package it can see, because a reading taken there finds no dependency edges and would otherwise look like a clean result.
 
-This is the same fixture and the same working directory as the getting-started week in the book. If a command here cannot run from a clean installation, the book is not ready to ask a reader to trust it.
+Every command below is run against a clean installation before release. If one of them cannot run from a fresh clone, that is a defect in this repository rather than in your setup.
 
 ## 1. Observe and set the baseline
 
@@ -128,8 +128,3 @@ enterprise-seam-lab/verify.sh
 formal/verify.sh
 ```
 
-## Edit notes
-
-- Moved to the checkout-pricing fixture and the clone root, so this transcript and the book's getting-started week run the same commands in the same place. They previously used different fixtures from different working directories while the week called this file its tested transcript.
-- Added the grounding, freshness-check and advise steps, and the exit-code contract.
-- Kept the ratification, mismatch rejection, exposure evidence, history and comparison sections; removed catalogue-authority, monetary debt, and general proof language in an earlier pass.
