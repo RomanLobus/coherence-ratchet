@@ -1,16 +1,25 @@
 name: publish
 
 # Publishes to PyPI via trusted publishing when a GitHub release is published.
-# One-time setup required on pypi.org: project "coherence-ratchet" -> add a
-# trusted publisher for RomanLobus/coherence-ratchet, workflow publish.yml,
-# environment pypi.
+#
+# One-time setup required on pypi.org before this can succeed: project
+# "coherence-ratchet" -> add a trusted publisher for RomanLobus/coherence-ratchet,
+# workflow publish.yml, environment pypi.
+#
+# Until that setup exists this job is skipped rather than run and failed, so a
+# release does not leave a spurious red mark on the repository. Enable it by
+# setting the repository variable PYPI_TRUSTED_PUBLISHER to "configured"
+# (Settings -> Secrets and variables -> Actions -> Variables), then re-run this
+# workflow against the release.
 
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   publish:
+    if: vars.PYPI_TRUSTED_PUBLISHER == 'configured'
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
