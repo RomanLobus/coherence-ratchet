@@ -21,11 +21,11 @@ npm ci
 npm run check
 npm run build
 
-PYTHONPATH="$HERE/producer" python3 "$HERE/producer/emit.py" pricing > /tmp/stewardship-price-good.json
-PYTHONPATH="$HERE/producer" python3 "$HERE/producer/emit.py" pricing_half_even > /tmp/stewardship-price-mutated.json
+PYTHONPATH="$HERE/producer" python3 "$HERE/producer/emit.py" pricing > /tmp/seam-lab-price-good.json
+PYTHONPATH="$HERE/producer" python3 "$HERE/producer/emit.py" pricing_half_even > /tmp/seam-lab-price-mutated.json
 
-node dist/test-consumer.js /tmp/stewardship-price-good.json 1
-if node dist/test-consumer.js /tmp/stewardship-price-mutated.json 1; then
+node dist/test-consumer.js /tmp/seam-lab-price-good.json 1
+if node dist/test-consumer.js /tmp/seam-lab-price-mutated.json 1; then
   echo "ERROR: consumer evidence missed the rounding mutation" >&2
   exit 1
 else

@@ -18,8 +18,8 @@ byte alone.
 
 **The marker carries the hashes.** That is what makes staleness checkable rather than hoped about.
 `ground --check` re-derives the tree and fails when the block describes a tree that no longer exists,
-which turns the book's thesis into a build failure: the pull request stops when the file the agents
-read no longer describes the code they are editing.
+which turns staleness into a build failure: the pull request stops when the file the agents read no
+longer describes the code they are editing.
 
 **The block states its own epistemic contract in plain words.** A derived model of "how we do things
 here" that nobody confirmed is an automated guess wearing the authority of a decision. The labels are

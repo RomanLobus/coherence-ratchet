@@ -209,7 +209,7 @@ def _main(argv: list[str] | None = None) -> int:
 
     # Every module below lives in this package; none is an optional third-party import. Swallowing
     # the exception here used to delete a whole verb from the CLI on any import error, silently and
-    # with every test still passing, so the command table printed in the book was unenforced. A
+    # with every test still passing, so the documented command table was unenforced. A
     # failure to register is now a failure to run.
     for _name in ("selfmodel", "gate", "comparison", "report", "history", "apidiff", "ground", "advise", "mcp", "calibrate", "interchange"):
         importlib.import_module("." + _name, __package__).register_cli(sub)

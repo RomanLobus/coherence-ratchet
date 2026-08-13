@@ -1,5 +1,5 @@
 {
-  "name": "stewardship-receipt-consumer",
+  "name": "seam-lab-receipt-consumer",
   "version": "0.1.0",
   "private": true,
   "type": "module",

@@ -1,6 +1,6 @@
 """Tests for the composite signal portfolio and the multi-signal ratchet.
 
-The point the book leans on: no single metric is enough, so the ratchet watches a portfolio
+The point the design leans on: no single metric is enough, so the ratchet watches a portfolio
 (duplication + cycles + connascence) while coupling stays diagnostic. These pin that the composite
 measures the staged billing states, that the portfolio ratchet trips on decay and holds on
 consolidation, and that consolidation raising coupling does NOT trip the ratchet.

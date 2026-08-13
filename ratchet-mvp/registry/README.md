@@ -1,16 +1,16 @@
 # The reader registry
 
-The book's longitudinal evidence has a hole it names in Chapter 2: every decay curve comes from
+The longitudinal evidence here has a hole it names openly: every decay curve comes from
 human-maintained code, because codebases with years of dense agent authorship *and* enough history to
 plot a curve do not exist yet. That treatment arm cannot be bought or hurried. It can only be
 recorded, by teams who start measuring before their systems are old enough to show it.
 
-This directory is where those readings are collected. A team that runs the Chapter 2 fieldwork on
+This directory is where those readings are collected. A team that runs the same fieldwork on
 their own subsystem can submit the structural readings, anonymised, with one covariate the public
 corpus lacks: what share of the code arrived agent-authored.
 
 Nothing here is required to use the method, and nothing here is a condition of anything. It exists
-because the measurement that would settle the book's open question is one nobody can take alone.
+because the measurement that would settle this open question is one nobody can take alone.
 
 ## What a submission contains
 
@@ -48,7 +48,7 @@ uses this corpus should be able to say what the bands meant.
 
 This registry is proposed by the author of a book that would benefit from the corpus supporting it.
 Two things guard against that. Submissions are published as received, including ones that cut against
-the book's argument, and the analysis script ships with the corpus so a reader can run their own.
+the argument here, and the analysis script ships with the corpus so a reader can run their own.
 A registry that only published confirming readings would be worth less than no registry.
 
 ## Status

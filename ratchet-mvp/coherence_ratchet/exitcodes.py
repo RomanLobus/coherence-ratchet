@@ -1,4 +1,4 @@
-"""The exit-code contract, in one place because the book prints it.
+"""The exit-code contract, in one place because callers encode it.
 
     0  held: nothing crossed, nothing found
     1  the line was crossed: a rule a person ratified, or a ceiling an owner set
@@ -14,7 +14,8 @@ difference between this tool and a detector, expressed as an integer.
 
 **A failure never reads as a clean result.** A tool that could not measure exits 4 and says so; it
 does not return zero findings. The rule a consumer is told to encode is that 4 is a failure, never a
-pass. A pipeline that green-lights on 4 has exactly the defect this book spends a chapter describing.
+pass. A pipeline that green-lights on 4 has exactly the defect this contract exists to prevent: a green
+build that measured nothing.
 """
 
 EXIT_HELD = 0

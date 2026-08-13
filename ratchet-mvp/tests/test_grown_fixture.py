@@ -8,7 +8,7 @@ What ten modules carry that four cannot is a denominator large enough to show th
 exists to refuse. Measured against its own smaller twin, the grown tree's cycle ratio **falls** from
 0.5 to 0.4 while the number of modules in a cycle **doubles**, from two to four. A ratchet that
 watched the ratio alone would read that as an improvement and tighten its ceiling, locking in a
-structure that got worse. Until now the book asserted that; here it is, on a committed fixture.
+structure that got worse. Until now that was asserted; here it is, on a committed fixture.
 """
 
 import os

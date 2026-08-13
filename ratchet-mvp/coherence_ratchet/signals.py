@@ -1,6 +1,6 @@
 """The coherence signal portfolio — the deterministic floor, packaged.
 
-One place to compute every deterministic signal the book's method watches, so the CLI and the
+One place to compute every deterministic signal the method watches, so the CLI and the
 ratchet can read them together (the P4/P8 lesson: no single metric is enough). All signals here
 are deterministic and stdlib-only. Semantic candidate surfacing and behavioural evidence are
 layers above this floor; they are NOT here.
@@ -71,7 +71,7 @@ def connascence_of_meaning(root: str):
 # This was `getattr(sys, "stdlib_module_names", ())` while the package claimed to support 3.9. On
 # 3.9 the attribute is absent, so the fallback made `_STDLIB` empty and every `import os` counted as
 # a third-party dependency: the dependency-sprawl signal inverted, silently, and a 3.9 reader got a
-# different number from the one printed in the book. The package now requires 3.10, and a missing
+# different number from the one published. The package now requires 3.10, and a missing
 # attribute is a real error rather than a wrong reading.
 _STDLIB = frozenset(sys.stdlib_module_names)
 

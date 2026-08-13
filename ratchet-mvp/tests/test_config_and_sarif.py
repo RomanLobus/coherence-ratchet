@@ -29,12 +29,12 @@ def _raises(fn):
 
 
 def test_absent_config_yields_no_settings():
-    """The default state of every repository, including the book's fixtures."""
+    """The default state of every repository, including this project's fixtures."""
     assert load(tempfile.mkdtemp()) == ({}, [])
 
 
 def test_the_repository_ships_no_config():
-    """A config file in the companion would silently change what the book prints."""
+    """A config file in the repository would silently change what the published readings print."""
     assert not os.path.exists(os.path.join(ROOT, "coherence", "config.json"))
 
 

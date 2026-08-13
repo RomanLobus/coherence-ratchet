@@ -67,7 +67,7 @@ def _source_index(root: str) -> dict[str, tuple[str, int, str]]:
     A labeller answers "would a change to one require the same change to the other", and that is not
     answerable from two dotted names. The pairs file therefore carries the code. This walks the tree a
     second time rather than widening ``FunctionRecord``, which sits on the measurement path every
-    printed number in the book depends on.
+    printed number depends on.
     """
     import ast
 

@@ -8,9 +8,9 @@ path that no longer exists, and ``check --tighten`` reads the zeros as an
 improvement and ratchets every ceiling to zero, destroying the budgets file
 that is the only artefact CI enforces.
 
-The rule this module enforces is the one the book states about its own
-instruments: a failure must never read as a clean result. A tree that cannot be
-measured raises, and the CLI turns that into exit 2 with the path named.
+The rule this module enforces governs every instrument here: a failure must
+never read as a clean result. A tree that cannot be measured raises, and the CLI
+turns that into exit 2 with the path named.
 
 The second guard is for a documented footgun rather than a bug. The analyser
 names a package after the directory it is given, so pointing it one level up —
