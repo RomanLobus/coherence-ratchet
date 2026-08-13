@@ -1,0 +1,22 @@
+{
+  "_note": "RECONSTRUCTED 12 August 2026, and not the catalogue that produced the recorded gate numbers for this library. The originals were never committed, which is why those numbers stay RECORDED_RUN. This file makes the gate runnable on flask so a reader with a key can produce a reproducible figure; a run against it is a new experiment with its own date, not a replication of the old one.",
+  "library": "flask",
+  "patterns": [
+    {
+      "name": "route-verb-shortcut",
+      "description": "the per-method routing decorators (get, post, put, delete, patch) that each set methods= and delegate to route(); symmetric by design"
+    },
+    {
+      "name": "request-lifecycle-registration",
+      "description": "before_request, after_request, teardown_request and their app-wide counterparts: registration decorators that append to a dict of lists, identical in shape because the lifecycle is uniform"
+    },
+    {
+      "name": "template-helper-registration",
+      "description": "template_filter, template_global and template_test: the same registration shape for the three Jinja extension points"
+    },
+    {
+      "name": "sansio-blueprint-parallel",
+      "description": "the deliberate parallel between the sansio scaffold and its concrete app/blueprint subclasses"
+    }
+  ]
+}

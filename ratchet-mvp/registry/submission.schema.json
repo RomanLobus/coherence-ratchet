@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coherence-reader-reading/1",
+  "title": "Reader registry submission, version 1",
+  "description": "One team's structural readings of one subsystem over its own history, anonymised. Counts and shapes only. The corpus this builds is the treatment arm the book's longitudinal evidence lacks: codebases with real agent authorship and enough history to plot a curve.",
+  "type": "object",
+  "required": ["schema", "project_key", "language", "size_band", "agent_authorship", "analyser", "points"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "coherence-reader-reading/1" },
+    "project_key": {
+      "type": "string",
+      "description": "An opaque key the submitter chooses and keeps, so a later submission can be recognised as the same subsystem without naming it. Never derived from the repository.",
+      "pattern": "^[a-z0-9-]{6,40}$"
+    },
+    "language": { "type": "string" },
+    "size_band": {
+      "enum": ["<50 modules", "50-200 modules", "200-1000 modules", ">1000 modules"],
+      "description": "A band rather than a count, because an exact module count plus a language is close to identifying."
+    },
+    "agent_authorship": {
+      "type": "object",
+      "required": ["band", "estimated_by"],
+      "properties": {
+        "band": {
+          "enum": ["none", "some", "about half", "most", "nearly all"],
+          "description": "Deliberately coarse. Commit trailers undercount pasted output and overcount heavily rewritten drafts, so a percentage here would be false precision."
+        },
+        "estimated_by": { "type": "string", "description": "How the band was arrived at, in the submitter's words." }
+      }
+    },
+    "analyser": {
+      "type": "object",
+      "required": ["version", "source_sha256_16", "python"],
+      "description": "Carried through from the history dump. Two submissions are comparable only if these agree.",
+      "properties": {
+        "version": { "type": "string" },
+        "source_sha256_16": { "type": "string" },
+        "python": { "type": "string" }
+      }
+    },
+    "points": {
+      "type": "array",
+      "minItems": 2,
+      "description": "The history dump's points, with sha and any finer-grained date removed.",
+      "items": {
+        "type": "object",
+        "required": ["month", "mods", "edges", "cycle_ratio"],
+        "additionalProperties": false,
+        "properties": {
+          "month": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "mods": { "type": "integer", "minimum": 0 },
+          "edges": { "type": "integer", "minimum": 0 },
+          "cyclic_modules": { "type": "integer", "minimum": 0 },
+          "unreadable_modules": { "type": "integer", "minimum": 0 },
+          "cycle_ratio": { "type": "number" },
+          "coupling": { "type": "number" },
+          "instab": { "type": "number" }
+        }
+      }
+    },
+    "note": { "type": "string", "description": "Anything the submitter wants recorded about the subsystem or the reading." }
+  }
+}

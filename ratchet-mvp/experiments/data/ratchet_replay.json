@@ -1,0 +1,364 @@
+{
+  "experiment": "ratchet replay over the pinned architecture-curve commits",
+  "rule_raw": "flag interval t->t+1 when cycle_ratio(t+1) > cycle_ratio(t)",
+  "rule_gate": "keep a raw flag only when a module newly entering a cycle has volatility > 0.05; otherwise suppress as all-frozen or denominator-shift",
+  "sampling": "the 16 pinned commits per library in longitudinal_arch_pins.json",
+  "excluded_samples": "commits with no package directory yet; not scored as zero",
+  "baseline_caveat": "baselines at the earliest measurable state, which inflates the count against a real deployment that baselines the current state",
+  "frozen_threshold": 0.05,
+  "libraries": {
+    "flask": {
+      "library": "flask",
+      "n_pinned": 16,
+      "n_measurable": 14,
+      "excluded": [
+        {
+          "date": "2010-04-06",
+          "reason": "no_src"
+        },
+        {
+          "date": "2010-05-02",
+          "reason": "no_src"
+        }
+      ],
+      "n_intervals": 13,
+      "raw_flags": 7,
+      "consolidations": 2,
+      "first_ratio": 0.2222,
+      "last_ratio": 0.8333,
+      "intervals": [
+        {
+          "interval": "2010-07-04->2010-08-18",
+          "cycle_ratio": "0.2222->0.0000",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2010-08-18->2011-06-29",
+          "cycle_ratio": "0.0000->0.0000",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2011-06-29->2011-09-20",
+          "cycle_ratio": "0.0000->0.0000",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2011-09-20->2012-06-27",
+          "cycle_ratio": "0.0000->0.0000",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2012-06-27->2013-06-14",
+          "cycle_ratio": "0.0000->0.0820",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2013-06-14->2014-08-26",
+          "cycle_ratio": "0.0820->0.1111",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2014-08-26->2017-05-27",
+          "cycle_ratio": "0.1111->0.4286",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2017-05-27->2018-04-26",
+          "cycle_ratio": "0.4286->0.4000",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2018-04-26->2019-10-12",
+          "cycle_ratio": "0.4000->0.5500",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2019-10-12->2021-02-01",
+          "cycle_ratio": "0.5500->0.5500",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2021-02-01->2022-05-12",
+          "cycle_ratio": "0.5500->0.6667",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2022-05-12->2023-08-01",
+          "cycle_ratio": "0.6667->0.7727",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2023-08-01->2026-07-30",
+          "cycle_ratio": "0.7727->0.8333",
+          "verdict": "flag"
+        }
+      ],
+      "gate": {
+        "library": "flask",
+        "n_measurable": 14,
+        "n_intervals": 13,
+        "raw_flags": 7,
+        "gated_flags": 7,
+        "suppressed": [],
+        "frozen_share": 0.25,
+        "max_commits_per_module": 488
+      }
+    },
+    "requests": {
+      "library": "requests",
+      "n_pinned": 16,
+      "n_measurable": 15,
+      "excluded": [
+        {
+          "date": "2011-02-13",
+          "reason": "no_src"
+        }
+      ],
+      "n_intervals": 14,
+      "raw_flags": 8,
+      "consolidations": 3,
+      "first_ratio": 0.1379,
+      "last_ratio": 0.5789,
+      "intervals": [
+        {
+          "interval": "2012-01-21->2012-03-30",
+          "cycle_ratio": "0.1379->0.3939",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2012-03-30->2012-07-08",
+          "cycle_ratio": "0.3939->0.1652",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2012-07-08->2012-12-17",
+          "cycle_ratio": "0.1652->0.1748",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2012-12-17->2013-03-22",
+          "cycle_ratio": "0.1748->0.2727",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2013-03-22->2014-01-22",
+          "cycle_ratio": "0.2727->0.3056",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2014-01-22->2015-02-03",
+          "cycle_ratio": "0.3056->0.1266",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2015-02-03->2016-02-03",
+          "cycle_ratio": "0.1266->0.3000",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2016-02-03->2016-11-15",
+          "cycle_ratio": "0.3000->0.3187",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2016-11-15->2017-05-26",
+          "cycle_ratio": "0.3187->0.2871",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2017-05-26->2017-11-20",
+          "cycle_ratio": "0.2871->0.3889",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2017-11-20->2019-04-20",
+          "cycle_ratio": "0.3889->0.3889",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2019-04-20->2020-08-18",
+          "cycle_ratio": "0.3889->0.3889",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2020-08-18->2023-12-23",
+          "cycle_ratio": "0.3889->0.3889",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2023-12-23->2026-08-03",
+          "cycle_ratio": "0.3889->0.5789",
+          "verdict": "flag"
+        }
+      ],
+      "gate": {
+        "library": "requests",
+        "n_measurable": 15,
+        "n_intervals": 14,
+        "raw_flags": 8,
+        "gated_flags": 5,
+        "suppressed": [
+          {
+            "interval": "2012-12-17->2013-03-22",
+            "cycle_ratio": "0.1748->0.2727",
+            "n_mods": "103->66",
+            "newly_cyclic": [],
+            "kind": "denominator-shift",
+            "true_positive_suppression": null
+          },
+          {
+            "interval": "2013-03-22->2014-01-22",
+            "cycle_ratio": "0.2727->0.3056",
+            "n_mods": "66->72",
+            "newly_cyclic": [
+              [
+                0.0,
+                "chardet"
+              ],
+              [
+                0.0,
+                "connection"
+              ],
+              [
+                0.0,
+                "fields"
+              ],
+              [
+                0.0,
+                "pyopenssl"
+              ],
+              [
+                0.0,
+                "response"
+              ]
+            ],
+            "kind": "all-frozen",
+            "true_positive_suppression": true
+          },
+          {
+            "interval": "2017-05-26->2017-11-20",
+            "cycle_ratio": "0.2871->0.3889",
+            "n_mods": "101->18",
+            "newly_cyclic": [],
+            "kind": "denominator-shift",
+            "true_positive_suppression": null
+          }
+        ],
+        "frozen_share": 0.368,
+        "max_commits_per_module": 735
+      }
+    },
+    "httpie": {
+      "library": "httpie",
+      "n_pinned": 16,
+      "n_measurable": 16,
+      "excluded": [],
+      "n_intervals": 15,
+      "raw_flags": 5,
+      "consolidations": 4,
+      "first_ratio": 0.0,
+      "last_ratio": 0.1538,
+      "intervals": [
+        {
+          "interval": "2012-02-25->2012-07-04",
+          "cycle_ratio": "0.0000->0.0000",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2012-07-04->2012-08-18",
+          "cycle_ratio": "0.0000->0.0000",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2012-08-18->2013-05-14",
+          "cycle_ratio": "0.0000->0.0000",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2013-05-14->2014-04-26",
+          "cycle_ratio": "0.0000->0.1111",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2014-04-26->2015-02-16",
+          "cycle_ratio": "0.1111->0.3200",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2015-02-16->2016-03-02",
+          "cycle_ratio": "0.3200->0.3200",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2016-03-02->2016-12-08",
+          "cycle_ratio": "0.3200->0.3333",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2016-12-08->2019-08-29",
+          "cycle_ratio": "0.3333->0.3333",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2019-08-29->2020-01-12",
+          "cycle_ratio": "0.3333->0.2188",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2020-01-12->2020-08-15",
+          "cycle_ratio": "0.2188->0.0571",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2020-08-15->2021-06-15",
+          "cycle_ratio": "0.0571->0.0571",
+          "verdict": "hold"
+        },
+        {
+          "interval": "2021-06-15->2021-10-06",
+          "cycle_ratio": "0.0571->0.0488",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2021-10-06->2022-01-12",
+          "cycle_ratio": "0.0488->0.0377",
+          "verdict": "consolidation"
+        },
+        {
+          "interval": "2022-01-12->2022-04-16",
+          "cycle_ratio": "0.0377->0.1029",
+          "verdict": "flag"
+        },
+        {
+          "interval": "2022-04-16->2024-12-17",
+          "cycle_ratio": "0.1029->0.1538",
+          "verdict": "flag"
+        }
+      ],
+      "gate": {
+        "library": "httpie",
+        "n_measurable": 16,
+        "n_intervals": 15,
+        "raw_flags": 5,
+        "gated_flags": 4,
+        "suppressed": [
+          {
+            "interval": "2016-03-02->2016-12-08",
+            "cycle_ratio": "0.3200->0.3333",
+            "n_mods": "25->24",
+            "newly_cyclic": [
+              [
+                0.0,
+                "input"
+              ]
+            ],
+            "kind": "all-frozen",
+            "true_positive_suppression": true
+          }
+        ],
+        "frozen_share": 0.615,
+        "max_commits_per_module": 108
+      }
+    }
+  }
+}

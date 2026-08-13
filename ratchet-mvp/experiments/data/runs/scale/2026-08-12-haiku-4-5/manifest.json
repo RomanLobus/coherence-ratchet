@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    "match",
+    "jargon"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T00:58:57.436596+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "claude-haiku-4-5-20251001",
+  "probe_module": "probe_scale_visibility",
+  "probe_sha256": "a616ce59e21355dfd4133a54ddf626182b93374f1eebedbb82726bef785f46e2",
+  "prompt_sha256": {
+    "jargon": "f33800a397036318a1217882ca781f766ea2a8b42fba976507cc4e3c1a521d84",
+    "match": "d76b5403f7f321c0c741531f33eda098460e5b7ff033190cb962b97affd4ff0d"
+  },
+  "started_at": "2026-08-12T00:57:46.260001+00:00",
+  "temperature": 1.0,
+  "trials": 20
+}

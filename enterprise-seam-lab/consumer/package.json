@@ -1,0 +1,16 @@
+{
+  "name": "stewardship-receipt-consumer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "openapi-typescript ../contracts/baseline.yaml -o src/generated/schema.d.ts",
+    "build": "tsc",
+    "check": "npm run generate && tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "openapi-typescript": "7.13.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-08-01",
+  "status": "VERIFIED",
+  "tools": {
+    "oasdiff": "1.27.0",
+    "openapi_typescript": "7.13.0",
+    "typescript": "5.9.3"
+  },
+  "artefacts": [
+    {"path": "contracts/baseline.yaml", "sha256": "2887e0447edf68cc5843516546920c1e356c62380d46a16bbd0e6fcaeda87a29"},
+    {"path": "contracts/optional-addition.yaml", "sha256": "f82d5ac3ab6c2e887a14cc8690bd0aa94fc2431c0848edec2adebd2a0c61a103"},
+    {"path": "contracts/breaking-rename.yaml", "sha256": "5d08fe356d07d4bff0a815a589735cf12500c056819ee3ccd0eb84be7800f42e"},
+    {"path": "contracts/semantic-change.yaml", "sha256": "1d201ffcf267dced512f12f52cf89ecac2bfed8c07eba9801ea3ceda29df1609"},
+    {"path": "producer/pricing.py", "sha256": "28d9d44785838238751614a7d78c29ac53afcf8e147737d10187323972e0a973"},
+    {"path": "producer/pricing_half_even.py", "sha256": "66e86b2480a167751911249b7fbe741e6a79ea1f201aaba635ce64aa795654c9"},
+    {"path": "consumer/package-lock.json", "sha256": "8563174eb8f883bfa816e9cea4c900efae282227b310df3915b773c67c32d15b"}
+  ],
+  "results": [
+    {
+      "change": "add optional discount_tier",
+      "schema_result": "COMPATIBLE",
+      "consumer_result": "COMPILES"
+    },
+    {
+      "change": "replace required total_cents with total",
+      "schema_result": "REFUTED: response-required-property-removed"
+    },
+    {
+      "change": "half-up to half-even rounding with unchanged response schema",
+      "schema_result": "NO_BREAKING_CHANGE_FOUND",
+      "consumer_result": "REFUTED at five milli-cents: expected one cent, received zero"
+    }
+  ]
+}

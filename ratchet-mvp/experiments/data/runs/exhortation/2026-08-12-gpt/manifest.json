@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    "full_context",
+    "full_exhort"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T05:57:20.996741+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "gpt-5.4-2026-03-05",
+  "probe_module": "probe_fullcontext_fragmentation",
+  "probe_sha256": "c538e4630ee6b720f8ab83e94dbdbc6256d52d1c4e115fc075a1903f62c23470",
+  "prompt_sha256": {
+    "full_context": "5ffa278ada1e7b99c8b36da001e8b2a0850c64a8822e0d8725b3616f72cd08b6",
+    "full_exhort": "6e84b1a738045c8b06a7fdf8c18de35a62ec40255370f86d5d740d8786710d90"
+  },
+  "started_at": "2026-08-12T05:56:20.300358+00:00",
+  "temperature": 1.0,
+  "trials": 20
+}

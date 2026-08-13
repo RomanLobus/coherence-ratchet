@@ -1,0 +1,118 @@
+{
+  "_note": "Pinned sampling commits. Even-index sampling over a growing history is epoch-dependent, so the printed digits are only reproducible if the sampled commits are fixed. Full 40-character SHAs; derived once, then used verbatim by every later run.",
+  "_verified": "httpie's pins reproduce longitudinal_arch_out.json exactly (16/16 commits, cycle_ratio and module count), which verifies the pinning machinery against an artefact created before the machinery existed. The refactor that replaced in-place `git checkout` with a detached worktree reproduces the same 16/16 httpie readings, so the isolation change costs nothing.",
+  "_n_samples": "16 for these architecture curves. longitudinal.py's function-duplication curves use 24. The two are deliberately different: moving these to 24 would change every printed digit, httpie's included, and forfeit the verification above.",
+  "_measured_at": "2026-08",
+  "_dumps": "experiments/data/longitudinal_arch_<lib>.json is the reading of record. <lib>_no-type-checking.json is the sensitivity variant with `if TYPE_CHECKING:` imports excluded. longitudinal_arch_out.json is the pre-pinning httpie record and is never rewritten.",
+  "_regenerate": "tools/evidence-check.sh (re-measures at these SHAs and exits 1 on any numeric difference). Re-deriving pins changes every printed digit at once and needs a written reason.",
+  "httpie": {
+    "clone": "https://github.com/httpie/cli.git",
+    "src": [
+      "httpie"
+    ],
+    "commits_total": 1637,
+    "first": "2012-02-25",
+    "last": "2024-12-17",
+    "shas": [
+      "b966efa17d837dc62c23d5f8064e184e22b14c2e",
+      "6ab03b21b4cc1c7ddc6c1d46b5bad4f07090955a",
+      "50810e5bd9c9c78fbb125f2157578d499ca40375",
+      "6e848b3203b16fe858b0d32a3fe330cc45cd19ed",
+      "609950f327f1fb1937619ac6b5a5c054e7268148",
+      "24957e3b611d7d9c642bf9396c30e0e07cd62cad",
+      "c2dae62af0331c4d5bb736d32ac2d59a6098c6c0",
+      "cc9083f541dc1df19294daf3351c5cfb2c67b347",
+      "4d299a553177175eedfa65e42580ea97627be2d7",
+      "4b524e6a8c644283857787929947588e40a3b3ff",
+      "6cd934d1b863188bf4acc69371c7728b137b0fc6",
+      "07a0359316e118edfde2f0abd1663b95c82286a0",
+      "ef4fa20ceb0044aa7820bd9d3f222fefc9d8fca2",
+      "00c859c51d725159249aa6fda812a775e352f21b",
+      "d262181bede5241a6b692c3245a77e2eb02bc262",
+      "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345"
+    ]
+  },
+  "flask": {
+    "clone": "https://github.com/pallets/flask.git",
+    "src": [
+      "src/flask",
+      "flask"
+    ],
+    "commits_total": 2268,
+    "first": "2010-04-06",
+    "last": "2026-07-30",
+    "shas": [
+      "33850c0ebd23ae615e6823993d441f46d80b1ff0",
+      "eeb0e949518720ff5302bcf336fc72dea44737d0",
+      "a38dcd5e2bed1bcf2c1fc319fa9c3bc35e360fe0",
+      "d903f55e835dd143afb6e0079376525718ffb5a9",
+      "510823c1592abe4c57e051e9d21bd134ab7f07a7",
+      "54875e93173f96d44a73431a4929059c55aed797",
+      "43c6a1ede87da5c20d8b5c7db995cf2d22eb40b2",
+      "44e39ab0713566bd91363f19ed09921df5db0196",
+      "7d57c29f7afa7712d4af195bef3cbb5dd083123d",
+      "6a8c8c34844334d62bf56258cb0390f5999074c7",
+      "0997e7c8d16c0cb0cb2a0fec72d56f45bc64d709",
+      "200ce9bd39c70a7782ef8ace0338ad71dbdb175d",
+      "15f0fc2d24a6e5cc35216b81b360be6ab89a7a4c",
+      "5512a6688193758a24ef0b6825217030da9fed21",
+      "b1385919bea3238d49a6e2cfc8261771775cd6e9",
+      "6a2f545bfd8ed31e19066a299296917e034aca58"
+    ]
+  },
+  "requests": {
+    "clone": "https://github.com/psf/requests.git",
+    "src": [
+      "src/requests",
+      "requests"
+    ],
+    "commits_total": 2663,
+    "first": "2011-02-13",
+    "last": "2026-08-03",
+    "shas": [
+      "e7615cbc6b4af5985c4e0d4848a426e2d35f79c3",
+      "9ba93b885cb503ddb84beb88210ea389912ff4d3",
+      "fff5269d1a9eb3c07acbbb0d995b689d674123c8",
+      "b7fd0e81fdff98bc4eed1e6147209fcbf0a28374",
+      "03c8e23dbbc6690220141bb685fac08ac9494177",
+      "132540956051e9486ffb3adcee95b47a71a37c80",
+      "2a6b835a5e08c7365b8a4d3bfea4dcd98ad2d205",
+      "69b7c45c2e1fc84e1d64ae95454afa69546c7e08",
+      "6143b7eebc96016a5c613b76c44e744e4551b2af",
+      "72d69d7b62c7c644001c72f065bd91cedb682dd6",
+      "282b01a7c9feae30feccbd54e33afcc06197df62",
+      "acd2645444d280ac0c5d2d227fdd222cb1ac609c",
+      "2d120e32dbb511bcabee02277d31d26fa986f576",
+      "48237afd9d064c639b9c2bcea7e75ab7b717b181",
+      "f3f978441916389abcb2f2a72522955d551326e9",
+      "1f6589ec3a1ee910f9a65cc3ceac60b26677bc0e"
+    ]
+  },
+  "boltons": {
+    "clone": "https://github.com/mahmoud/boltons.git",
+    "src": [
+      "boltons"
+    ],
+    "commits_total": 1255,
+    "first": "2013-02-19",
+    "last": "2026-07-17",
+    "shas": [
+      "2c4595e3278c4b4b4175c1dbf6d00a5b02fc65f2",
+      "a8664f19645a9ba89ff4905916ca79b11d35dde1",
+      "1b9a612aa2d131c694e88a0b7aa2ba0fd3d1f0ae",
+      "d750dc1a4ce8089599fd2e29b453bd12e3558017",
+      "29853648d94d185ff04f701beebbc3732cee78cf",
+      "53f456718288e7c4ad7b0f43083db8007ab526b1",
+      "5f7dc985c55510fac2007357c069386e54674796",
+      "539227e2609e0c4429b0e3ff17be22b70bb3e05e",
+      "b0c88024f93653ac75af4af59b4b53553c83baf5",
+      "c3b9a0400744ec9a1ff2ab118cd2dbb632407789",
+      "87ac574fa4653d71026f240c942b667322f2b3d8",
+      "88509c7c8c246bbcd26b0c228b7b5e13cf25e3b1",
+      "b938fc47fc20f80369ba88cfff9b2f712def9ed6",
+      "d059c996bfc071da6bcd587ed422d1d27f3f171b",
+      "263652b5b6ad7f6cd30d4e7e573b22dda59087bd",
+      "e66cade323f5c11cebb4bd0f099e634b245adccd"
+    ]
+  }
+}

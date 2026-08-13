@@ -1,0 +1,18 @@
+{
+  "_note": "RECONSTRUCTED 12 August 2026, and not the catalogue that produced the recorded gate numbers for this library. The originals were never committed, which is why those numbers stay RECORDED_RUN. This file makes the gate runnable on requests so a reader with a key can produce a reproducible figure; a run against it is a new experiment with its own date, not a replication of the old one.",
+  "library": "requests",
+  "patterns": [
+    {
+      "name": "http-verb-shortcut",
+      "description": "the module-level verb helpers (get, options, head, post, put, patch, delete) that each build a method string and delegate to request(); their bodies are near-identical because the public API is deliberately symmetric, and collapsing them would remove the documented surface"
+    },
+    {
+      "name": "session-verb-shortcut",
+      "description": "the same symmetry on Session: per-verb methods that set the method and call Session.request()"
+    },
+    {
+      "name": "hook-dispatch",
+      "description": "the small dispatch helpers that iterate registered hooks; repeated shape, one sanctioned mechanism"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "patterns": [
+    {
+      "name": "retry-canonical",
+      "description": "thin wrappers that delegate to the one sanctioned retry helper; intentional API symmetry, not fragmentation"
+    }
+  ]
+}

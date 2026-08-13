@@ -1,0 +1,20 @@
+{
+  "conditions": [
+    "blind",
+    "selfmodel"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T00:48:25.919142+00:00",
+  "harness_version": "1",
+  "max_tokens": 2500,
+  "model": "gpt-5.4-2026-03-05",
+  "probe_module": "probe_nochokepoint",
+  "probe_sha256": "098e4a346ebea9a35dc178c7988e491e11faa9173b61d3e2c91c47283f380cad",
+  "prompt_sha256": {
+    "blind": "b9d46da885caae61de0eddd89d699e4da6ff3643629330c403aefc4fd634448a",
+    "selfmodel": "17812c2b16b23c644d717da8f7604a81d73cbee531148966c3c24a1c7fe9edbe"
+  },
+  "started_at": "2026-08-12T00:46:29.213786+00:00",
+  "temperature": 1.0,
+  "trials": 30
+}

@@ -1,0 +1,18 @@
+{
+  "_note": "RECONSTRUCTED 12 August 2026, and not the catalogue that produced the recorded gate numbers for this library. The originals were never committed, which is why those numbers stay RECORDED_RUN. This file makes the gate runnable on boltons so a reader with a key can produce a reproducible figure; a run against it is a new experiment with its own date, not a replication of the old one.",
+  "library": "boltons",
+  "patterns": [
+    {
+      "name": "container-mirror",
+      "description": "parallel implementations across dictutils, listutils and setutils that deliberately mirror each other's API so the containers are learnable as a set; the resemblance is the design"
+    },
+    {
+      "name": "stdlib-shim",
+      "description": "backports and compatibility shims that reimplement a standard-library shape on purpose, so a caller can use one name across versions"
+    },
+    {
+      "name": "independent-utility",
+      "description": "the library's organising principle: modules are standalone by design and may repeat a small helper rather than import across module boundaries, which is why boltons reads zero cycles"
+    }
+  ]
+}

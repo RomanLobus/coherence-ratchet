@@ -1,0 +1,46 @@
+{
+  "seed": 7,
+  "n_per_library": 75,
+  "threshold_at_sampling": 0.45,
+  "bands": [
+    [
+      0,
+      0.2
+    ],
+    [
+      0.2,
+      0.35
+    ],
+    [
+      0.35,
+      0.45
+    ],
+    [
+      0.45,
+      0.6
+    ],
+    [
+      0.6,
+      0.8
+    ],
+    [
+      0.8,
+      1.01
+    ]
+  ],
+  "band_weights": [
+    1,
+    2,
+    4,
+    4,
+    2,
+    1
+  ],
+  "pairs": 225,
+  "revisions": {
+    "requests": "1f6589ec3a1ee910f9a65cc3ceac60b26677bc0e",
+    "flask": "8b4fd5d18611e63080b826ecfefe8659dba7d2e4",
+    "boltons": "580a9c2d12755d472e534ca3e277e8f7e3ada49e",
+    "httpie": "5b604c37c6c67e18e7c3e9aee6c88a8c22b98345"
+  }
+}

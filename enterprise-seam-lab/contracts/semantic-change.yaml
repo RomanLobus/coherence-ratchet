@@ -1,0 +1,31 @@
+openapi: 3.1.0
+info:
+  title: Checkout pricing contract
+  version: 1.0.1
+paths:
+  /price:
+    post:
+      operationId: priceOrder
+      responses:
+        '200':
+          description: Priced order after an internal rounding implementation change
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      additionalProperties: false
+      required: [order_id, total_cents, currency]
+      properties:
+        order_id:
+          type: string
+        total_cents:
+          type: integer
+          minimum: 0
+        currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+

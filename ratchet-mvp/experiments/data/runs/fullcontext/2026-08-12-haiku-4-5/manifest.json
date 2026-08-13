@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    "task_only",
+    "full_context",
+    "full_surfaced",
+    "full_buried"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T00:23:30.959494+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "claude-haiku-4-5-20251001",
+  "probe_module": "probe_fullcontext_fragmentation",
+  "probe_sha256": "694209bc5eb4329e18d003200485d1fd6d432a697d4d74ef1135b4d5633eef1c",
+  "prompt_sha256": {
+    "full_buried": "a00d5b0ee4811317d5c5de4a19835c14e492eebe6c1aeda2c56876d60e19e226",
+    "full_context": "5ffa278ada1e7b99c8b36da001e8b2a0850c64a8822e0d8725b3616f72cd08b6",
+    "full_surfaced": "fcfb327d362ba4328904a5310b994fffc3645323c049c939a4d4fbb734fb79d0",
+    "task_only": "62f74d596a81b17eb7730ef7a2941ba1ef47dcd0da0b4832614c54d438edc594"
+  },
+  "started_at": "2026-08-12T00:21:38.913840+00:00",
+  "temperature": 1.0,
+  "trials": 10
+}

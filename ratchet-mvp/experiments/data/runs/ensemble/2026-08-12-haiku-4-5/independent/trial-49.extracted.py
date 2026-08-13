@@ -1,0 +1,34 @@
+def build_order(customer_id, items):
+    """
+    Build an order dictionary from customer ID and items list.
+    
+    Args:
+        customer_id: The customer ID
+        items: List of dictionaries with 'product_id', 'quantity', and 'unit_price' (in cents)
+    
+    Returns:
+        Dictionary with 'customer_id', 'line_items', and 'order_total' (in cents)
+    """
+    order_total = 0
+    line_items = []
+    
+    for item in items:
+        product_id = item['product_id']
+        quantity = item['quantity']
+        unit_price = item['unit_price']
+        
+        line_total = quantity * unit_price
+        order_total += line_total
+        
+        line_items.append({
+            'product_id': product_id,
+            'quantity': quantity,
+            'unit_price': unit_price,
+            'line_total': line_total
+        })
+    
+    return {
+        'customer_id': customer_id,
+        'line_items': line_items,
+        'order_total': order_total
+    }

@@ -1,0 +1,26 @@
+{
+  "_comment": "Declared layering for the grown checkout fixture (playground/_states/07-checkout-cycle-grown). 'order' is high-to-low. With 'order' and 'layer_of' present the gate runs a free deterministic up-dependency check and needs no API key; 'responsibilities' additionally enables the semantic check, constrained to these rules and never open-ended review. This spec exists so the ten-module tree can be read as two regions with different bars: a cross-team seam where the contract is enforced, and cells where it is not.",
+  "order": ["entry", "domain", "shared"],
+  "layer_of": {
+    "checkout": "entry",
+    "invoice": "entry",
+    "notifications": "entry",
+    "receipt": "domain",
+    "revenue_report": "domain",
+    "campaigns": "domain",
+    "discounts": "domain",
+    "pricing": "shared",
+    "tax_rules": "shared",
+    "audit_log": "shared"
+  },
+  "rules": [
+    "R1: a module may depend only on modules in a lower layer, so the shared layer never reaches back up",
+    "R2: only the entry layer may perform I/O",
+    "R3: a shared module holds one concept and no orchestration"
+  ],
+  "responsibilities": {
+    "pricing": "the canonical minor-unit conversion and the discount arithmetic behind it",
+    "tax_rules": "statutory rate lookup",
+    "audit_log": "append an immutable record of a decision"
+  }
+}

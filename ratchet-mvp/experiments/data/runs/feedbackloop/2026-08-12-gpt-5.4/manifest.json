@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    "loop"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T01:18:35.731592+00:00",
+  "harness_version": "1",
+  "max_tokens": 1500,
+  "model": "gpt-5.4-2026-03-05",
+  "probe_module": "probe_feedback_loop",
+  "probe_sha256": "5105946eb9d607a3fa9a31fd5031500e29cdd517d0895f3dd82f24ce3be6a9da",
+  "prompt_sha256": {
+    "loop": "62f74d596a81b17eb7730ef7a2941ba1ef47dcd0da0b4832614c54d438edc594"
+  },
+  "started_at": "2026-08-12T01:17:29.602824+00:00",
+  "temperature": 1.0,
+  "trials": 10
+}

@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  title: Checkout pricing contract
+  version: 1.1.0
+paths:
+  /price:
+    post:
+      operationId: priceOrder
+      responses:
+        '200':
+          description: Priced order using half-up rounding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceResponse'
+components:
+  schemas:
+    PriceResponse:
+      type: object
+      additionalProperties: false
+      required: [order_id, total_cents, currency]
+      properties:
+        order_id:
+          type: string
+        total_cents:
+          type: integer
+          minimum: 0
+        currency:
+          type: string
+          pattern: '^[A-Z]{3}$'
+        discount_tier:
+          type: string
+          enum: [STANDARD, SILVER, GOLD]
+

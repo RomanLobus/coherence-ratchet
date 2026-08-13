@@ -1,0 +1,290 @@
+{
+  "full_buried": [
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-00.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-01.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-02.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-03.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-04.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-05.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-06.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-07.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-08.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-09.extracted.py"
+    }
+  ],
+  "full_context": [
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-00.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-01.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-02.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-03.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-04.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-05.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-06.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-07.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-08.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-09.extracted.py"
+    }
+  ],
+  "full_surfaced": [
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-00.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-01.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-02.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-03.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-04.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-05.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-06.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-07.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-08.extracted.py"
+    },
+    {
+      "reinvent_cents": false,
+      "reinvent_retry": false,
+      "reuse_cents": true,
+      "reuse_retry": true,
+      "trial": "trial-09.extracted.py"
+    }
+  ],
+  "task_only": [
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-00.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-01.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-02.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-03.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-04.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-05.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-06.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-07.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-08.extracted.py"
+    },
+    {
+      "reinvent_cents": true,
+      "reinvent_retry": true,
+      "reuse_cents": false,
+      "reuse_retry": false,
+      "trial": "trial-09.extracted.py"
+    }
+  ]
+}

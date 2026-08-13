@@ -1,0 +1,16 @@
+# API contract check — a signature diff beside the proof
+
+**Motivation.** The behaviour-complete proof pins behaviour at the change points; it says nothing about the public interface. MSR 2026 measurement says that gap sits exactly where consolidation operates: across 60,324 Python patches, agents introduced potential breaking changes at a *lower* overall rate than humans (3.45% vs 7.40%) but the pattern **reverses on maintenance work** — agent refactor patches 6.72% and chores 9.35%, versus 2.89%/2.69% on feat/fix (humans show the opposite shape), and agent self-reported confidence did not predict contract safety (the "Confidence Trap": 3.94%/3.96%/3.16% breakage at confidence 8/9/10) (Ferdous et al., *Safer Builders, Risky Maintainers*, MSR 2026). R11/F10; Claims 16/54.
+
+**Operationalisation.** `coherence_ratchet.apidiff` compares the public surface of two source trees (or files): module-level functions and classes with their signatures (names, parameters, defaults, keyword-onlyness; public = not underscore-prefixed, honouring `__all__`). Output classes: REMOVED / CHANGED-SIGNATURE / ADDED, with a per-item and overall **COMPATIBLE / BREAKING** verdict (removals and incompatible signature changes break; added-optional-parameter and additions are compatible). CLI: `coherence-ratchet apidiff <old-tree> <new-tree>`, positioned as an optional consolidation-time check beside `prove`. Probe: `probe_api_contract.py`.
+
+**Results.**
+- **Breaking consolidation fixture** (variant merged onto a canonical with a renamed and two removed parameters): **caught** — `attempts` renamed to `tries` (keyword callers break), `exc` removed, `sleep` removed → BREAKING.
+- **Faithful consolidation fixture** (same merge done compatibly): **cleared** — one new *optional* parameter `jitter` → COMPATIBLE.
+- **The shipped playground consolidation** (`03-loyalty` → `04-consolidated`): **BREAKING** — the book's own worked consolidation narrowed a public signature (`orders:submit_with_retry` lost `pause`). The check catches the book's own fixture; whether that break was acceptable is precisely the steward's sign-off question the check exists to raise.
+
+**Verdict.** The check does what the MSR finding asks of it: a zero-cost deterministic diff that catches interface narrowing at exactly the consolidate/refactor moment where agents are measurably 2–3× riskier, and it earned its keep immediately by flagging the shipped playground consolidation. It belongs in the default consolidation path beside `prove`, with the verdict routed to the steward, never auto-acted.
+
+**Proposed claim (honest strength):** a public-surface signature diff deterministically catches the removal/rename/narrowing class of consolidation contract breaks and clears compatible merges [measured — fixtures + the shipped playground case]; it is syntactic only — names and signatures, not semantics (a type change, a behavioural contract, or a documented guarantee can break without a signature change) [limit].
+
+**Limits.** Python signatures only; syntactic compatibility, not semantic; module-level surface (nested/class-attribute surfaces partial); `__all__` honoured where present but re-export conventions vary; single-tree scope (no cross-package consumers).

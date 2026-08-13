@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-08-01",
+  "status": "VERIFIED",
+  "tools": {
+    "dafny": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "tla_tools_release": "1.7.1",
+    "tlc": "2.16 of 31 December 2020"
+  },
+  "artefacts": [
+    {
+      "path": "DiscountRounding.dfy",
+      "sha256": "98e8fa232c9d926ac3f83a091f579f777728ac7abea31b8b6c37c33365f22db0"
+    },
+    {
+      "path": "DiscountRoundingMutation.dfy",
+      "sha256": "17fd315c6aacecf5beba511701c281114f0d21ad1f1fe15e1cc94abe7c856d82"
+    },
+    {
+      "path": "ContractRollout.tla",
+      "sha256": "a55465512e20cbcbda926850c8a0b4facc13bec2266d139a0843a9456954d055"
+    },
+    {
+      "path": "Safe.cfg",
+      "sha256": "8ad51ed7a632c2cd58d4e44d4955d42b377f1b55e273c3da6b795e6a366b28ae"
+    },
+    {
+      "path": "Unsafe.cfg",
+      "sha256": "29215873025c90cd308636e0daab94cc56c2ffef89e757843565880e7875380b"
+    }
+  ],
+  "results": [
+    {
+      "status": "FORMALLY_VERIFIED_IMPLEMENTATION",
+      "property": "PriceCents equals ConsolidatedPriceCents for all inputs satisfying the Dafny preconditions",
+      "assumptions": [
+        "amounts are non-negative integer milli-cents",
+        "discount is an integer from 0 to 10000 basis points"
+      ],
+      "result": "6 verified, 0 errors"
+    },
+    {
+      "status": "REFUTED",
+      "property": "half-up and half-even implementations are equivalent",
+      "result": "Dafny rejected the equivalence postcondition"
+    },
+    {
+      "status": "MODEL_CHECKED",
+      "property": "no consumer receives an unsupported published contract version; version two is eventually published",
+      "assumptions": [
+        "two consumers and two versions",
+        "weak fairness for each consumer upgrade and publication"
+      ],
+      "result": "safe model: 7 generated states, 5 distinct states, no error"
+    },
+    {
+      "status": "REFUTED",
+      "property": "an unrestricted publication step preserves consumer compatibility",
+      "result": "TLC produced a two-state counterexample"
+    }
+  ]
+}

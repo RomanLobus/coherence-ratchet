@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    "no_spec",
+    "stale_map",
+    "derived_spec"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T07:36:44.029734+00:00",
+  "harness_version": "1",
+  "max_tokens": 3000,
+  "model": "claude-haiku-4-5-20251001",
+  "probe_module": "probe_derived_vs_mapped",
+  "probe_sha256": "4b2cb917fef00c10d8de43ecc238670cc3d7ead88f3f4a4b1c3623200a9f6a01",
+  "prompt_sha256": {
+    "derived_spec": "53213c8146c494c719eb24377721b8c297530e640d7a62eeb055560873ca7f67",
+    "no_spec": "fdd4c190d238dd47d40652397b2517011965cd01830d2de7d2c4bb87554e83b9",
+    "stale_map": "90ff9a5632c578c76aa6546edbf20b6717f543b5d0be7af38d5de610efd69145"
+  },
+  "started_at": "2026-08-12T07:33:17.112017+00:00",
+  "temperature": 1.0,
+  "trials": 20
+}

@@ -1,216 +1,135 @@
-# Quickstart: the first week, reproduced
+# Quickstart: one honest pass through the method
 
-This is the runnable mirror of the book's "Getting started" chapter. Every command below runs against
-the staged billing subsystem in `playground/_states/`, and every number matches the chapter exactly.
-Where the chapter says "a billing slice in the same shape as the checkout-pricing subsystem the book has followed", this is it.
-
-Run from `ratchet-mvp/`. Nothing here needs a network or an API key.
-
-## 0. Install the floor
+Run this from the companion-repository root, the directory the clone leaves you in:
 
 ```sh
-pip install -e .
-coherence-ratchet --help        # measure | init | check | selfmodel
+python3 -m pip install ./ratchet-mvp
+python3 ratchet-mvp/tests/run.py
+P=ratchet-mvp/playground/_states/06-checkout-cycle/checkout_pricing
+mkdir -p coherence
 ```
 
-The staged subsystem is one billing slice captured in five states: a clean baseline, three rounds of
-AI-assisted change that each copy-and-diverge an existing behaviour, and a consolidated end state. The
-"drifted" subsystem the chapter works on is `03-loyalty` — the loyalty feature nobody finished.
+`P` must point at the package directory itself. Pointed one level up, at the state directory, the tool refuses and names the package it can see, because a reading taken there finds no dependency edges and would otherwise look like a clean result.
+
+This is the same fixture and the same working directory as the getting-started week in the book. If a command here cannot run from a clean installation, the book is not ready to ask a reader to trust it.
+
+## 1. Observe and set the baseline
 
 ```sh
-STATE=playground/_states/03-loyalty/billing
+coherence-ratchet measure "$P"
+coherence-ratchet init "$P" --budgets coherence/budgets.json \
+  --by 'pricing region owner' --reason 'first baseline for the checkout-pricing region'
+coherence-ratchet check "$P" --budgets coherence/budgets.json
 ```
 
-## 1. See the shape (self-model)
+The final command must pass unchanged. The baseline is not an ideal architecture; it is the line this region has agreed not to cross silently. `init` refuses without `--by`, and refuses to overwrite an existing budgets file without `--force`.
+
+## 2. Derive the observed model
 
 ```sh
-coherence-ratchet selfmodel derive $STATE --model coherence/selfmodel.json
-coherence-ratchet selfmodel query "which sites compute retry?" --model coherence/selfmodel.json
+coherence-ratchet selfmodel derive "$P" --model coherence/selfmodel.json
+coherence-ratchet selfmodel query 'order total' \
+  --model coherence/selfmodel.json --intent coherence/intent.json
 ```
 
-Expected:
-
-```
-[concept]  subject: retry   matcher: deterministic
-  exports.export_with_retry  (score 1)
-  orders.submit_with_retry  (score 1)
-  refunds.issue_refund  (score 1)
-  retry.retry  (score 1)
-  reuse: a 'retry' helper already exists -> retry.retry (duplicated in exports.export_with_retry, loyalty.award_points_retrying, orders.submit_with_retry)
-```
-
-Retry is implemented four times; `retry.retry` is the helper the other three drifted from. Other
-questions the same model answers:
+The model contains observations and candidates. A commonly used helper or entity-key intersection remains a candidate, not a policy. Inspect candidate IDs, then ratify one only after reviewing its evidence:
 
 ```sh
-coherence-ratchet selfmodel query "does a helper for retry exist?"        --model coherence/selfmodel.json
-coherence-ratchet selfmodel query "what layer and deps does money have?"  --model coherence/selfmodel.json
+coherence-ratchet selfmodel ratify '<candidate-id>' \
+  --model coherence/selfmodel.json --intent coherence/intent.json \
+  --by 'pricing architecture owner' \
+  --rationale 'one minor-unit conversion at the checkout seam' \
+  --scope 'checkout-pricing seam'
 ```
 
-The model is **derived**. Add a fifth retry site to the tree, re-run `derive` with no hand-editing, and
-the query shows it. That is the freshness property (the tool never asks anyone to refresh a map by hand).
-
-Feed it to an agent before it writes a change — the grounding pack that makes reuse reliable:
+## 3. Ground the agents in what was ratified
 
 ```sh
-coherence-ratchet selfmodel context $STATE > coherence/grounding.md
+coherence-ratchet ground "$P" \
+  --model coherence/selfmodel.json --intent coherence/intent.json
 ```
 
-## 2. See the drift (portfolio)
+Writes a managed block into `AGENTS.md` and leaves every byte outside its markers alone. Statements carry `[OBSERVED]`, `[CANDIDATE]`, or `[RATIFIED]`, and the block says in its own words that only the ratified lines are instructions. The opening marker carries the model and tree hashes, which is what makes the next command possible:
 
 ```sh
-coherence-ratchet measure $STATE
+coherence-ratchet ground "$P" --check \
+  --model coherence/selfmodel.json --intent coherence/intent.json
 ```
 
-Duplication ratio 0.75, two redundant clusters, one shared literal. Note the diagnostic: as this
-subsystem decayed from the baseline, coupling density *fell* (0.40 → 0.25), because each diverged copy
-is a loosely connected new module. A coupling-only gate would have called the decay an improvement.
-That is why the ratchet watches a portfolio and treats coupling as a diagnostic, never a target.
+Exits 0 while the block still describes the tree, and exits 2 with both hashes named once the source moves. Change the source after deriving and `derive`-dependent commands reject the stale model; change the model without re-ratifying and they reject the intent/model hash mismatch.
 
-To see the whole progression:
+## 4. Measure a change against what was ratified
 
 ```sh
-for s in 00-baseline 01-orders 02-exports 03-loyalty 04-consolidated; do
-  echo "== $s =="; coherence-ratchet measure playground/_states/$s/billing --json
-done
+git add -A
+coherence-ratchet advise "$P" --staged \
+  --model coherence/selfmodel.json --intent coherence/intent.json
 ```
 
-| state           | duplication | clusters | connascence | coupling |
-|-----------------|------------:|---------:|------------:|---------:|
-| 00-baseline     | 0.00        | 0        | 0           | 0.40     |
-| 03-loyalty      | 0.75        | 2        | 1           | 0.25     |
-| 04-consolidated | 0.00        | 0        | 1           | 0.75     |
+A ratified conflict names the canonical site, its approver and the date, and is the only class that may fail a build. A collision with something nobody ratified is surfaced and says so. `--fail-on ratified` is the default; `--fail-on any` and `--fail-on none` exist, and a flag to fail on a candidate deliberately does not.
 
-Consolidation drops duplication to zero and *raises* coupling to 0.75 (the shared helper). Healthy
-coupling; exactly the fix the ratchet must reward and therefore must not ratchet.
-
-## 3. Open the ledger
+## 5. Sample history without checking out old commits
 
 ```sh
-coherence-ratchet init  playground/_states/00-baseline/billing --budgets coherence/budgets.json
-coherence-ratchet check $STATE --budgets coherence/budgets.json      # exits 1 — tripped
+coherence-ratchet history "$P" --repo . --samples 24 \
+  --json coherence/history.json
 ```
 
-```
-RATCHET TRIPPED — coherence worsened past budget:
-  ✗ connascence_shared: 1 > ceiling 0 (+1)
-  ✗ duplication_ratio: 0.75 > ceiling 0.0 (+0.75)
-  ✗ redundant_clusters: 2 > ceiling 0 (+2)
-  ✗ redundant_functions: 6 > ceiling 0 (+6)
-```
+The sampler reads committed snapshots through `git archive`; it leaves HEAD and the working tree alone.
 
-Two honest branches: fold a copy back into `retry.retry`, or record the debt with an owner and a date.
+## 6. Accept exposure only with evidence
+
+When `check` finds deterioration, CI fails. If the owner deliberately accepts it, record the decision rather than weakening the baseline anonymously:
 
 ```sh
-coherence-ratchet check $STATE --budgets coherence/budgets.json \
-  --accept --owner "billing-team" \
-  --trigger "next reconciliation refactor / 2026-Q4" \
-  --region "billing.loyalty" \
-  --ledger coherence/coherence-ledger.jsonl        # exits 0 — writes a ledger line
+coherence-ratchet check "$P" --budgets coherence/budgets.json \
+  --accept --owner 'pricing team' \
+  --trigger 'before contract v2 becomes the default' \
+  --region 'checkout-pricing seam' \
+  --volatility medium --coordination-span high \
+  --criticality high --discoverability medium --blast-radius high \
+  --evidence 'three independently deployed consumers' \
+  --confidence high --review-date 2026-10-01 \
+  --repayment-feasibility medium
 ```
 
-```json
-{"when": "...", "region": "billing.loyalty", "owner": "billing-team",
- "repayment_trigger": "next reconciliation refactor / 2026-Q4",
- "breaches": [{"metric": "duplication_ratio", "ceiling": 0.0, "observed": 0.75}, ...]}
-```
-
-Then read the ledger as leading indicators — coverage, overdue items, how long the ratchet has held:
+This example resolves to `HIGH` exposure. If any required dimension lacks evidence, the only honest status is `NEEDS_ASSESSMENT`, written with `--needs-assessment`; a partial assessment offered without that flag is refused.
 
 ```sh
 coherence-ratchet report --ledger coherence/coherence-ledger.jsonl
 ```
 
-These are process metrics (the discipline working), not an ROI claim.
-
-## 4. Consolidate, and watch the portfolio find the next debt
+## 7. Compare a proposed consolidation
 
 ```sh
-coherence-ratchet check playground/_states/04-consolidated/billing --budgets coherence/budgets.json
+F=ratchet-mvp/_fixtures/consolidation
+coherence-ratchet compare \
+  "$F::variants.to_cents_half_up" \
+  "$F::variants.to_cents_half_even"
+
+coherence-ratchet compare \
+  "$F::variants.retry_orig" \
+  "$F::variants.retry_faithful" \
+  --strategy "$F/retry_strategy.py"
 ```
 
-Duplication is back to zero: the copies were folded into `retry.retry`. Coupling rose to 0.75, and the
-ratchet does not care, because coupling is a diagnostic. But the check still trips, on one signal:
+The rounding mutation returns `REFUTED` with a counterexample. A faithful finite comparison returns `NO_DIVERGENCE_FOUND`, not equivalence. Unsupported signatures or inconclusive runs return `UNPROVEN`. Follow with `apidiff`, contract evidence where relevant, and human review.
 
-```
-  ✗ connascence_shared: 1 > ceiling 0 (+1)
-```
+## 8. Read the result correctly
 
-This is the portfolio doing exactly what a single duplication metric could not. The consolidation
-repaid the obvious debt and left a subtler one: the retry count `3` is now hard-coded in two places,
-`retry.retry(attempts=3)` and `loyalty.award_points_retrying(limit=3)`, agreeing by coincidence rather
-than by a shared constant. The self-model names it:
+The tool can show what exists, surface possible patterns, bind a human decision to evidence, put the ratified decisions where agents read them, stop unacknowledged worsening, and search a finite space for behavioural divergence. It cannot decide the organisation's architecture, forecast delivery cost, or establish arbitrary program equivalence.
+
+Exit codes are uniform across every subcommand: 0 held, 1 the line was crossed, 2 the tool refused to measure or was misused, 3 advisory findings present, 4 could not measure.
+
+The enterprise seam and formal-method examples live outside this CLI, and both need a toolchain the Python install does not carry:
 
 ```sh
-coherence-ratchet selfmodel query "what conventions are there?" --model coherence/selfmodel.json
-#   3  in loyalty, retry
+enterprise-seam-lab/verify.sh
+formal/verify.sh
 ```
 
-That is the next week-two decision, surfaced automatically: either let `retry` own the default and have
-loyalty call `retry(action)`, or accept the shared constant in the ledger with an owner and a date. A
-duplication-only gate would have gone green here and hidden it. This is why the ratchet watches a
-portfolio.
+## Edit notes
 
-## 5. Wire it into CI
-
-Add the check as a pipeline step against the real subsystem, with the budget file committed to the repo:
-
-```sh
-coherence-ratchet check billing/ --budgets coherence/budgets.json
-```
-
-Non-zero exit fails the build, the same contract as a coverage ratchet. A pull request that copies retry
-a fifth time now stops and asks: reuse the helper, or open a ledger entry.
-
-## 6. Optional: the semantic gate (the second layer)
-
-The deterministic floor surfaced two duplicate clusters. The `gate` command adds the LLM layer that
-decides which are *sanctioned* symmetry (clear) and which are *uncatalogued* fragmentation (surface):
-
-```sh
-export ANTHROPIC_API_KEY=sk-...        # optional; without it the gate skips cleanly
-coherence-ratchet gate $STATE \
-    --catalogue coherence/catalogue.example.json \
-    --layering  coherence/layering.example.json
-```
-
-Each cluster is matched against the ratified catalogue over 5 trials; a cluster clears only on a 4-of-5
-quorum to a specific pattern, otherwise it surfaces to the steward. With no key:
-
-```
-  semantic gate skipped — set ANTHROPIC_API_KEY (deterministic layering ran)
-  (deterministic floor already flagged 2 duplicate clusters)
-```
-
-With no `--catalogue`, every cluster surfaces (the zero-false-clear default). The gate surfaces to a
-human and never auto-acts; the deterministic `check` above stays the hard CI gate.
-
-## 7. Optional: prove a consolidation preserved behaviour (the third layer)
-
-When the team actually consolidates a cluster (folds the copies into the canonical helper), `prove`
-differentially tests the canonical against each original before it is committed. The shipped fixtures
-reproduce the silent changes the experiments found:
-
-```sh
-F=_fixtures/consolidation
-# the integrator's silent rounding flip — REFUTED at the half-cent (auto-generated float seeds)
-coherence-ratchet prove "$F::variants.to_cents_half_up" "$F::variants.to_cents_half_even"
-# two retry divergences at once (try-count + exception selectivity) — REFUTED
-coherence-ratchet prove "$F::variants.retry_orig" "$F::variants.retry_canon" --strategy $F/retry_strategy.py
-# a genuinely faithful consolidation — PROVED
-coherence-ratchet prove "$F::variants.retry_orig" "$F::variants.retry_faithful" --strategy $F/retry_strategy.py
-```
-
-The first two exit non-zero with a counterexample (`original returns 1 ≠ canonical returns 0` at
-`0.005`); the third exits 0. That is the brake the experiments proved non-negotiable: a porous test
-suite waves these through, `prove` does not.
-
-## What this reproduces, and what it does not
-
-Steps 0–5 are deterministic and offline — the floor a team can trust without trusting anything it cannot
-reproduce. Step 6 adds the semantic layer (the LLM matcher), optional and env-gated, surfacing to a
-steward rather than deciding. Step 7 adds the behaviour-complete proof — deterministic and offline
-again — the brake that refuses a behaviour-changing consolidation. All three layers of the method now
-run: `check` (floor) → `gate` (semantic) → `prove` (behaviour). What remains outside the tool is
-*performing* the consolidation for you and comparing side effects / non-determinism; the steward owns
-those. See `docs/worked-example.md` for a public-repo run (Flask) of the architecture signals.
+- Moved to the checkout-pricing fixture and the clone root, so this transcript and the book's getting-started week run the same commands in the same place. They previously used different fixtures from different working directories while the week called this file its tested transcript.
+- Added the grounding, freshness-check and advise steps, and the exit-code contract.
+- Kept the ratification, mismatch rejection, exposure evidence, history and comparison sections; removed catalogue-authority, monetary debt, and general proof language in an earlier pass.

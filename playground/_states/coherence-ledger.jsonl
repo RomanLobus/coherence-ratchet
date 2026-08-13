@@ -1,1 +1,0 @@
-{"breaches": [{"ceiling": 0, "metric": "redundant_clusters", "observed": 1}, {"ceiling": 0, "metric": "redundant_functions", "observed": 2}, {"ceiling": 0.0, "metric": "duplication_ratio", "observed": 0.4}], "note": "orders.py reinvents retry", "owner": "billing-steward", "region": "billing", "repayment_trigger": "before next orders change", "when": "2026-06-25"}

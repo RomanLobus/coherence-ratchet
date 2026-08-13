@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coherence-measurement/1",
+  "title": "Coherence measurement interchange, version 1",
+  "description": "Structural counts produced by some tool, in a shape this ratchet can hold a line on. The reference extractor reads Python; the judgement is language-neutral, and this schema is what lets the two come apart. Two properties are load-bearing. Counts are raw, never ratios or composite scores: a score falls when the codebase grows while the raw counts hold, so a score cannot be ratcheted honestly. And every count is a candidate, never an observation: this tool did not read that code, so the producer travels with the numbers and a person still decides what any of it means.",
+  "type": "object",
+  "required": ["schema", "produced_by", "epistemic", "counts"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "coherence-measurement/1"
+    },
+    "produced_by": {
+      "type": "object",
+      "description": "Which tool made these counts, at which version, against which of its own schema versions. A grounding pack built on imported facts names this, so a reader can tell which parser produced them.",
+      "required": ["tool", "version", "producer_schema"],
+      "properties": {
+        "tool": { "type": "string" },
+        "version": { "type": "string" },
+        "producer_schema": {
+          "type": "string",
+          "description": "The producer's own schema version this adapter was written against. An adapter meeting a version it has not been read against refuses rather than guessing."
+        },
+        "adapter": { "type": "string" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "description": "What was measured and when, in the producer's own terms.",
+      "properties": {
+        "revision": { "type": "string" },
+        "created_at": { "type": "string" },
+        "scope": { "type": "string" }
+      }
+    },
+    "epistemic": {
+      "const": "candidate",
+      "description": "Imported counts are always candidates. There is deliberately no way to declare them observed: only the extractor that read the code may claim that, and only a named person may ratify anything on their strength."
+    },
+    "counts": {
+      "type": "object",
+      "description": "Signal name to raw count. Names are namespaced by producer (`drift.architecture_violation`) so an imported signal cannot be confused with one this tool measured. Every signal the producer reported is carried; dropping the unrecognised ones would baseline a narrower portfolio than the reader believes they set.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["raw"],
+        "properties": {
+          "raw": {
+            "type": "number",
+            "minimum": 0,
+            "description": "A count, not a ratio and not a score. This field is the whole reason the schema exists."
+          },
+          "unit": { "type": "string" }
+        }
+      }
+    },
+    "sites": {
+      "type": "array",
+      "description": "Where the producer found each thing it counted, so a count can be read back to a file and a line rather than taken on faith.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "signal": { "type": "string" },
+          "file": { "type": "string" },
+          "line": { "type": ["integer", "null"] },
+          "title": { "type": "string" },
+          "fingerprint": { "type": "string" }
+        }
+      }
+    }
+  }
+}

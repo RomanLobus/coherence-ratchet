@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    "task_sham"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-12T00:27:48.075200+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "claude-haiku-4-5-20251001",
+  "probe_module": "probe_fullcontext_fragmentation",
+  "probe_sha256": "d9773083f9a5d6a84aca3601115cbba1daa506bb6baa1c31b74b6c3688f29ed7",
+  "prompt_sha256": {
+    "task_sham": "c48a99f62022557954da49382390737e9a0c07ed7b3cc6b85b29aac9495c621d"
+  },
+  "started_at": "2026-08-12T00:27:27.547354+00:00",
+  "temperature": 1.0,
+  "trials": 10
+}
