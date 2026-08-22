@@ -17,6 +17,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
+        # Required since the action's v2 breaking change: without it, pull_request events fail with
+        # "GITHUB_TOKEN is now required to scan pull requests". Push events did not need it, which is
+        # why this only surfaced when the workflow first ran against a PR.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   tool:
     runs-on: ubuntu-latest
@@ -93,6 +98,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # advise diffs HEAD~1...HEAD on push events, which a shallow
+          # checkout does not contain.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -146,7 +155,7 @@ jobs:
         run: |
           set -eu
           curl -fsSL -o dafny.zip \
-            https://github.com/dafny-lang/dafny/releases/download/v4.11.0/dafny-4.11.0-x64-ubuntu-20.04.zip
+            https://github.com/dafny-lang/dafny/releases/download/v4.11.0/dafny-4.11.0-x64-ubuntu-22.04.zip
           unzip -q dafny.zip -d "$HOME/dafny"
           curl -fsSL -o "$HOME/tla2tools.jar" \
             https://github.com/tlaplus/tlaplus/releases/download/v1.7.1/tla2tools.jar
