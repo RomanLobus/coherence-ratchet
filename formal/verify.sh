@@ -1,6 +1,11 @@
 #!/bin/sh
 set -eu
 
+# The manifest pins verify.sh as well as the proof artefacts, so it is checked before anything runs.
+# Without it this script could be edited to assert nothing and the lab would still report VERIFIED.
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+python3 "$HERE/../tools/manifest-check.py" "$HERE" check
+
 : "${DAFNY:?Set DAFNY to the Dafny 4.11.0 executable}"
 : "${TLA2TOOLS:?Set TLA2TOOLS to the TLA+ tools 1.7.1 jar}"
 

@@ -1,0 +1,195 @@
+name: companion-ci
+
+# The guards in tools/ existed and none of them ran. artefact-sync-check.sh is the only thing
+# standing between a change to the tool and a silently wrong book, and it ran nowhere. A companion
+# for a book about holding a line has to hold its own line, so this pipeline runs every check the
+# repository ships and dogfoods the tool on its own source.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        # Required since the action's v2 breaking change: without it, pull_request events fail with
+        # "GITHUB_TOKEN is now required to scan pull requests". Push events did not need it, which is
+        # why this only surfaced when the workflow first ran against a PR.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  tool:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The package requires 3.10: sys.stdlib_module_names does not exist before it, and the
+        # fallback inverted the dependency-sprawl signal rather than failing.
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install ./ratchet-mvp pytest==8.3.5
+      - run: pytest -q ratchet-mvp/tests
+      - name: zero-dependency runner
+        # A shipped claim that nothing currently tests: the suite runs without pytest, for a reader
+        # who has not installed it.
+        run: python tests/run.py
+        working-directory: ratchet-mvp
+
+  guards:
+    # The manuscript guards. Fast, no network, and each one traceable to a defect that shipped.
+    #
+    # This one workflow file serves two checkouts: the authoring monorepo, where the manuscript and
+    # the book tooling live, and the published companion, where they do not. The guards below read
+    # manuscript/ and tools/, so in the companion there is nothing for them to check. They detect
+    # that and skip rather than fail, because a job that cannot run where it is installed should not
+    # leave a red mark on a public repository: an always-red pipeline is read as broken software.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install ./ratchet-mvp
+      - name: is the manuscript part of this checkout?
+        id: scope
+        run: |
+          if [ -f manuscript/front-matter.md ] && [ -d tools ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::the manuscript and book tooling are not part of this checkout; the manuscript guards have nothing to check here"
+          fi
+      - name: install ripgrep
+        # acceptance-check.sh and regression-guard.sh are built on rg, which is not on the runner.
+        if: steps.scope.outputs.present == 'true'
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+      - name: artefact sync (printed tool output is byte-identical)
+        if: steps.scope.outputs.present == 'true'
+        run: tools/artefact-sync-check.sh
+      - name: acceptance (prohibited claims)
+        if: steps.scope.outputs.present == 'true'
+        run: tools/acceptance-check.sh
+      - name: production (no internal apparatus ships, versions agree)
+        if: steps.scope.outputs.present == 'true'
+        run: tools/production-check.sh
+      - name: regression guard (voice, terminology, retracted figures, evidence classes)
+        if: steps.scope.outputs.present == 'true'
+        run: tools/regression-guard.sh --no-companion
+      - name: calibration replicates
+        if: hashFiles('ratchet-mvp/calibration/replicate.sh') != ''
+        # Deterministic and offline: the committed labels plus the scorer must reproduce the
+        # published table. Exits clean while the corpus is unlabelled, so this can land before
+        # the labelling does.
+        run: ratchet-mvp/calibration/replicate.sh
+        working-directory: .
+
+  dogfood:
+    # The tool, on itself. If the companion cannot hold a line on its own source, the book cannot
+    # ask a reader to hold one on theirs.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # advise diffs HEAD~1...HEAD on push events, which a shallow
+          # checkout does not contain.
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install ./ratchet-mvp
+      - run: coherence-ratchet --version
+      - name: measure the companion's own package
+        run: coherence-ratchet measure ratchet-mvp/coherence_ratchet
+      - name: advise on this change
+        # Advisory here by design: nothing in this repository is ratified, and a candidate may not
+        # fail a build. The step proves the verb runs against a real diff, not that it found nothing.
+        run: |
+          set +e
+          coherence-ratchet advise ratchet-mvp/coherence_ratchet \
+            --diff "${{ github.event.pull_request.base.sha || 'HEAD~1' }}...HEAD" \
+            --fail-on none
+          code=$?
+          set -e
+          if [ "$code" -eq 4 ]; then
+            echo "advise could not read the change; that is not a clean result"
+            exit 1
+          fi
+          if [ "$code" -eq 2 ]; then
+            echo "advise refused to measure; a refusal is not a pass"
+            exit 1
+          fi
+          # 0 and 3 are the only clean outcomes here: --fail-on none means 1 cannot occur.
+      - name: a wrong path must fail, not pass
+        # The regression this pipeline exists to prevent: measuring a path that is not there
+        # returned a clean all-zero reading and exit 0.
+        run: |
+          set +e
+          coherence-ratchet measure ./no/such/package
+          code=$?
+          set -e
+          if [ "$code" -eq 0 ]; then
+            echo "a nonexistent path reported success; the trust guard has regressed"
+            exit 1
+          fi
+          echo "refused as expected (exit $code)"
+
+  formal:
+    # Both FORMAL rows in the evidence table depend on this script, and it had never run in CI.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: install pinned Dafny and TLA+ tools
+        run: |
+          set -eu
+          curl -fsSL -o dafny.zip \
+            https://github.com/dafny-lang/dafny/releases/download/v4.11.0/dafny-4.11.0-x64-ubuntu-22.04.zip
+          unzip -q dafny.zip -d "$HOME/dafny"
+          curl -fsSL -o "$HOME/tla2tools.jar" \
+            https://github.com/tlaplus/tlaplus/releases/download/v1.7.1/tla2tools.jar
+          echo "DAFNY=$(find "$HOME/dafny" -type f -name dafny -perm -u+x | head -1)" >> "$GITHUB_ENV"
+          echo "TLA2TOOLS=$HOME/tla2tools.jar" >> "$GITHUB_ENV"
+      - name: verify the formal lab
+        run: formal/verify.sh
+
+  enterprise-seam:
+    # This job used to reimplement a weaker subset inline: it never installed oasdiff and never ran
+    # the mutation arm, so the lab's headline result — a schema check passing while consumer
+    # evidence refutes — was unverified on every commit. Run the committed script instead.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.14.0'
+          cache: npm
+          cache-dependency-path: enterprise-seam-lab/consumer/package-lock.json
+      - name: install pinned oasdiff
+        run: |
+          set -eu
+          curl -fsSL -o oasdiff.tar.gz \
+            https://github.com/oasdiff/oasdiff/releases/download/v1.27.0/oasdiff_1.27.0_linux_amd64.tar.gz
+          tar -xzf oasdiff.tar.gz oasdiff
+          echo "OASDIFF=$PWD/oasdiff" >> "$GITHUB_ENV"
+      # The manifest check needs no tools, so it runs on its own step: a drifted oracle should fail
+      # the pipeline even on a runner that cannot install oasdiff or Dafny.
+      - name: both evidence labs still bind their own oracle
+        run: |
+          python3 tools/manifest-check.py enterprise-seam-lab check
+          python3 tools/manifest-check.py formal check
+      - run: enterprise-seam-lab/verify.sh
