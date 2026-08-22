@@ -231,7 +231,7 @@ BOOK_ENTRIES = [
 
 def test_book_printed_entries_become_overdue_after_their_review_date():
     """Both printed entries carry event-worded triggers with no date, so reading the trigger text
-    alone left this project's own worked examples permanently unchaseable.
+    alone left the book's own worked examples permanently unchaseable.
     """
     r = report.report(_ledger(BOOK_ENTRIES), today=datetime.date(2027, 3, 1))
     regions = {o["region"] for o in r["overdue"]}
@@ -557,7 +557,7 @@ def test_pawl_holds_both_diluted_ceilings_on_the_real_fixture():
 
     Both watched ratios fall in the grown state and neither is an improvement: the cyclic count rises
     2 -> 4, and the redundant-function count holds flat at 5 while the function total grows. Under the
-    rule the pawl states — the ratio improves and its raw count improves with it — both are refused.
+    rule the book states — the ratio improves and its raw count improves with it — both are refused.
     The selective half of the behaviour is pinned by `test_tighten_lowers_when_numerator_also_fell`.
     """
     from coherence_ratchet.signals import measure_all

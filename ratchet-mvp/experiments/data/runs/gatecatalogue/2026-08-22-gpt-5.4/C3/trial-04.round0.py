@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are similar hash-wrapper functions, which do not match any of the listed sanctioned patterns for verb shortcuts or hook dispatch.","confidence":"high"}

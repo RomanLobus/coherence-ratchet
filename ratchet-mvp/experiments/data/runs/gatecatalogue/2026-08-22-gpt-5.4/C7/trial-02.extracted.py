@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are Response property predicates for different redirect conditions, which do not match any sanctioned shortcut or hook-dispatch catalogue pattern.","confidence":"high"}

@@ -1,0 +1,24 @@
+{
+  "conditions": [
+    "blind",
+    "named_only",
+    "source_only",
+    "selfmodel"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-22T04:31:37.614680+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "claude-haiku-4-5-20251001",
+  "probe_module": "probe_nochokepoint",
+  "probe_sha256": "4a7480de63f1e8002a899fc7fc373a0c7a2c77fa1f1f9a0981083a3a4c0d5821",
+  "prompt_sha256": {
+    "blind": "b9d46da885caae61de0eddd89d699e4da6ff3643629330c403aefc4fd634448a",
+    "named_only": "748efd83d46b3d87bf6f65bc13171b95f619329d959a190beb60fc804d5c7cbf",
+    "selfmodel": "17812c2b16b23c644d717da8f7604a81d73cbee531148966c3c24a1c7fe9edbe",
+    "source_only": "b0835cdc088725d5c23d7bc5e1f563e575e9f228dc489628647a507f32193c1e"
+  },
+  "started_at": "2026-08-22T04:27:30.576919+00:00",
+  "temperature": 1.0,
+  "trials": 30
+}

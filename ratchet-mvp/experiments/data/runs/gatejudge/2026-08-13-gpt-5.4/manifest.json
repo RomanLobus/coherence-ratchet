@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-13T03:01:19.541335+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "gpt-5.4-2026-03-05",
+  "probe_module": "probe_gate_judge",
+  "probe_sha256": "5626b052c36113501c3a235022866f9e71b95c03bc460f7685fbcaa985c2773c",
+  "prompt_sha256": {
+    "C1": "090b5fa83f76d7b1a46f96fafa585bacdca1e88a66238120cc0e0a48dae5f1cb",
+    "C2": "0799617b2564c9c1fbe2690ce3450af3ae71414d916ecfcd09e096c6e32ac5f5",
+    "C3": "26beffb2829f1d8d9a4bccd347325a67322c2e9440e65332a6e751ad019729b7",
+    "C4": "f608e871089bcfcfe679dd4a93ea99511f4d32785b659bf7f018ec6d4901678a",
+    "C5": "968b39dac527ddfaf92cc4cd768aee4179879420576dd0ccc0346b42035c49cd",
+    "C6": "2dd4aebfb9d403f7d24aca7e0b16c5d92c2e4a7451921bc8ad59d3d37680158a",
+    "C7": "532f60b662615f4101f6ee18e04577eccfb2f3eda69ec94170f0ccee78389610",
+    "C8": "8709db9bea8c0bb26e612a11e0ea2786d66e1bd2054c80af530d661c6991cfaf"
+  },
+  "started_at": "2026-08-13T03:00:17.359158+00:00",
+  "temperature": 1.0,
+  "trials": 5
+}

@@ -7,7 +7,7 @@ that is architectural judgement and this method does not automate it.
 
 ## The corpus, and how to label it
 
-`pairs.jsonl` holds 225 pairs sampled from the four control libraries this project characterises, 75 per
+`pairs.jsonl` holds 225 pairs sampled from the four control libraries the book characterises, 75 per
 library at seed 7, stratified across the whole similarity range and weighted towards the bands either
 side of the shipped 0.45 threshold, which is where a threshold decision is actually made.
 `provenance.json` pins the commit of each library the pairs were drawn from, so the corpus can be
@@ -29,7 +29,7 @@ progress in the browser only. It is regenerated from `pairs.jsonl` and is not co
 
 Two labellers are better than one, and the disagreement rate is worth reporting when there are two.
 With one labeller, say so where the figures are published: a single-labeller ground truth is a real
-limit, and this project's own evidence rules require it to be named rather than implied away.
+limit, and the book's own evidence rules require it to be named rather than implied away.
 
 ## The question to ask
 

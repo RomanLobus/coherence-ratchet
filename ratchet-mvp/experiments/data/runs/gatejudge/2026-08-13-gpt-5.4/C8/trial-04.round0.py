@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These functions intentionally produce different output types and one has mapping-specific handling via .items(), so the small shared validation logic does not justify merging their implementations.","confidence":"high"}

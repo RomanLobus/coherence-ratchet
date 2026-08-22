@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are two distinct public properties with closely related but intentionally different semantics, and the tiny repeated predicate is clearer and more stable than forcing a shared helper.","confidence":"high"}

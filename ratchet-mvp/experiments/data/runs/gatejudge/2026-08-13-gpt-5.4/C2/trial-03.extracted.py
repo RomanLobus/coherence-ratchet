@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These wrappers intentionally provide distinct public API entry points and signatures/documentation for different HTTP verbs and contexts (module-level vs Session methods), so the small delegation-based repetition is appropriate.", "confidence": "high"}

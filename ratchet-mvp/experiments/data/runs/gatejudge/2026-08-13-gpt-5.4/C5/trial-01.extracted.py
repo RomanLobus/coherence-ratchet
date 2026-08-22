@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are tiny, standard mapping-style convenience iterators with different yielded attributes, and merging them would reduce clarity without meaningful maintenance benefit.","confidence":"high"}

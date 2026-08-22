@@ -9,7 +9,7 @@
     coherence-ratchet apidiff  <old-tree> <new-tree> [--json]
     coherence-ratchet ground   <path> [--target FILE] [--check] [--dry-run]
     coherence-ratchet advise   <path> [--staged | --diff RANGE | --patch FILE | --stdin]
-                               [--fail-on ratified|any|none] [--format text|json]
+                               [--fail-on ratified|none] [--format text|json]
     coherence-ratchet serve    <path>   # the same standing, to a coding agent over MCP
 
 `check` exits non-zero when a watched signal has worsened past its ceiling — the same contract as a
@@ -209,7 +209,7 @@ def _main(argv: list[str] | None = None) -> int:
 
     # Every module below lives in this package; none is an optional third-party import. Swallowing
     # the exception here used to delete a whole verb from the CLI on any import error, silently and
-    # with every test still passing, so the documented command table was unenforced. A
+    # with every test still passing, so the command table printed in the book was unenforced. A
     # failure to register is now a failure to run.
     for _name in ("selfmodel", "gate", "comparison", "report", "history", "apidiff", "ground", "advise", "mcp", "calibrate", "interchange"):
         importlib.import_module("." + _name, __package__).register_cli(sub)

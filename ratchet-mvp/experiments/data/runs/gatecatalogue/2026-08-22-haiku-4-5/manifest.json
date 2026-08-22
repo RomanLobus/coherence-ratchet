@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+  ],
+  "errors": {},
+  "finished_at": "2026-08-22T04:51:19.535804+00:00",
+  "harness_version": "1",
+  "max_tokens": 2000,
+  "model": "claude-haiku-4-5-20251001",
+  "probe_module": "probe_gate_catalogue",
+  "probe_sha256": "d659fc17acb3312a0bfe25ac53badffb4ea00d73d502f39f3a559c272b937b49",
+  "prompt_sha256": {
+    "C1": "9b9f1f06adc2483e2a7e96dd4479e4d2d4a4e61a2496f2f363491784e7a1371b",
+    "C2": "0dccdd6cdacc4754a573149fbaac161e200985dece5a53980636474aa276549f",
+    "C3": "70e5b6fd08caaea9014eefa0e3a4bed757ec3e2c1a0691847591a9addcb477db",
+    "C4": "15988b6c3599767d247431d5c9b6d685ef4104ab499606aaccf2fb07043b6af9",
+    "C5": "7ee06371240ce392fc4cd80f33fa568d8db646b22f6f87b5c4fc004198b5b20f",
+    "C6": "2786893028f569aefdea40107036aec9ef172a330bafda6e0fada41fa9dc0b6d",
+    "C7": "e85ca8feac1a88cd024f83273f8906c45b889d2bdcea40f66a53746cb4f0936a",
+    "C8": "e8b40913c2b888c62747e0498c1284e583d67c90e53869ed8ced59530c4d4ef9"
+  },
+  "started_at": "2026-08-22T04:50:03.007544+00:00",
+  "temperature": 1.0,
+  "trials": 5
+}

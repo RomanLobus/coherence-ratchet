@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are parallel hashing helpers and do not match any of the only sanctioned patterns, which are limited to verb shortcuts and hook dispatch helpers.","confidence":"high"}

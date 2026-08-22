@@ -1,0 +1,1 @@
+{"verdict":"CONSOLIDATE","reason":"These wrappers differ only by the selected hashlib algorithm and can be cleanly replaced by a single helper parameterized by the hash function without losing clarity.","confidence":"high"}

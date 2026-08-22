@@ -8,7 +8,7 @@ What ten modules carry that four cannot is a denominator large enough to show th
 exists to refuse. Measured against its own smaller twin, the grown tree's cycle ratio **falls** from
 0.5 to 0.4 while the number of modules in a cycle **doubles**, from two to four. A ratchet that
 watched the ratio alone would read that as an improvement and tighten its ceiling, locking in a
-structure that got worse. Until now that was asserted; here it is, on a committed fixture.
+structure that got worse. Until now the book asserted that; here it is, on a committed fixture.
 """
 
 import os
@@ -149,3 +149,26 @@ def test_a_layering_violation_can_fail_a_build_and_a_candidate_cannot():
     assert cli.main(["gate", GROWN, "--layering", spec, "--fail-on", "violation"]) == 1
     # The clean tree still has duplicate clusters nobody ratified. They are surfaced, not failed.
     assert cli.main(["gate", clean, "--layering", spec, "--fail-on", "violation"]) == 3
+
+
+def test_no_value_of_gate_fail_on_fails_on_a_surfaced_cluster():
+    """The advise invariant, enforced on the gate the same way and for the same reason.
+
+    `--fail-on surface` used to exit 1 on a surfaced cluster, which is by definition a candidate
+    nobody ratified. It was removed. Looping over the advertised choices keeps it removed.
+    """
+    import argparse
+
+    from coherence_ratchet import cli, gate as gate_mod
+
+    parser = argparse.ArgumentParser()
+    sub = parser.add_subparsers(dest="cmd")
+    gate_mod.register_cli(sub)
+    action = next(a for a in sub.choices["gate"]._actions if a.dest == "fail_on")
+
+    spec = os.path.join(ROOT, "coherence", "grown-layering.json")
+    clean = os.path.join(STATES, "05-checkout-clean", "checkout_pricing")
+
+    for choice in action.choices:
+        code = cli.main(["gate", clean, "--layering", spec, "--fail-on", choice])
+        assert code != 1, f"gate --fail-on {choice} failed a build on a surfaced cluster"

@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two methods both search cookies but differ in conflict-handling behavior and do not match any sanctioned shortcut or hook-dispatch catalogue pattern.","confidence":"high"}

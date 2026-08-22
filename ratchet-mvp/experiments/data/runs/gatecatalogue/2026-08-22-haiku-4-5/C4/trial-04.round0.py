@@ -1,0 +1,3 @@
+```json
+{"pattern": "NONE", "reason": "These functions share a nested conditional structure for filtering cookies, but they diverge significantly in their core logic: _find returns the first match arbitrarily while _find_no_duplicates validates uniqueness and raises CookieConflictError, making them semantically different implementations rather than instances of a sanctioned symmetry pattern.", "confidence": "high"}
+```

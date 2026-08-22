@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are distinct public properties with closely related but intentionally different predicates, and merging them would likely reduce API clarity more than it would meaningfully remove duplication.","confidence":"high"}

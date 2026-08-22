@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "Although they share validation logic, the functions intentionally produce different normalized representations and have subtly different handling for mapping-like inputs, so separate implementations are justified.", "confidence": "high"}

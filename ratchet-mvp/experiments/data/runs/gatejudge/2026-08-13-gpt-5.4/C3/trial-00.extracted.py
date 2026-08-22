@@ -1,0 +1,1 @@
+{"verdict":"CONSOLIDATE","reason":"These functions differ only by the selected hashlib algorithm and can be cleanly replaced by one helper parameterized by the hash constructor without harming clarity.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two helpers convert similar inputs but to different output forms with different branching, and they do not match any sanctioned verb-shortcut or hook-dispatch pattern in the catalogue.","confidence":"high"}

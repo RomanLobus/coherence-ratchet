@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two methods are similar list-building utilities, but they do not match any sanctioned catalogue entry, which only covers verb shortcuts and hook dispatch helpers.","confidence":"high"}

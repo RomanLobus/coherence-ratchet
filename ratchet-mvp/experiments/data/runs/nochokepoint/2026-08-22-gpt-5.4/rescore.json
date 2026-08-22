@@ -1,0 +1,19 @@
+{
+  "collection_probe_sha256": "4a7480de63f1e8002a899fc7fc373a0c7a2c77fa1f1f9a0981083a3a4c0d5821",
+  "conditions": [
+    "blind",
+    "named_only",
+    "selfmodel",
+    "source_only"
+  ],
+  "prompts_unchanged": true,
+  "rescored_at": "2026-08-22T05:49:28.457739+00:00",
+  "scorer_changed_since_collection": true,
+  "scorer_sha256": "44daa4975630b1e677a50c1508fbf8f9bc5d94d62d39bf8ceec83cf9ca282dd5",
+  "trials": {
+    "blind": 30,
+    "named_only": 30,
+    "selfmodel": 30,
+    "source_only": 30
+  }
+}

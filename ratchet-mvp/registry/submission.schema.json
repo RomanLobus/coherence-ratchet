@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "coherence-reader-reading/1",
   "title": "Reader registry submission, version 1",
-  "description": "One team's structural readings of one subsystem over its own history, anonymised. Counts and shapes only. The corpus this builds is the treatment arm the existing longitudinal evidence lacks: codebases with real agent authorship and enough history to plot a curve.",
+  "description": "One team's structural readings of one subsystem over its own history, anonymised. Counts and shapes only. The corpus this builds is the treatment arm the book's longitudinal evidence lacks: codebases with real agent authorship and enough history to plot a curve.",
   "type": "object",
   "required": ["schema", "project_key", "language", "size_band", "agent_authorship", "analyser", "points"],
   "additionalProperties": false,

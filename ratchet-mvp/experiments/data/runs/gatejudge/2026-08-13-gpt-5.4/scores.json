@@ -1,0 +1,298 @@
+{
+  "C1": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional public convenience wrappers for distinct HTTP verbs, and merging them would hurt API clarity more than it would reduce meaningful duplication.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These thin HTTP verb wrappers are intentional public API entry points with distinct names, signatures, typing, and documentation, so the small repetition improves usability and clarity rather than warranting consolidation.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional public convenience wrappers for distinct HTTP verbs with method-specific signatures and documentation, so the small repetition preserves API clarity more than a shared helper would improve maintainability.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional thin convenience wrappers for distinct HTTP verbs with method-specific signatures and documentation, so the small repetition preserves a clear public API rather than indicating harmful duplication.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional thin public API wrappers for distinct HTTP verbs with different signatures and documentation, so the small repetition preserves clarity and usability.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C2": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional convenience wrappers for different HTTP verbs and call contexts (Session methods vs module-level functions), and collapsing them would likely hurt API clarity more than it would reduce meaningful duplication.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional thin convenience wrappers for distinct public API entry points and HTTP verbs, with small semantic differences like Session.get setting allow_redirects by default, so merging them would reduce clarity more than it would remove meaningful duplication.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentional thin convenience wrappers exposing distinct public APIs and signatures for session-bound versus module-level HTTP verbs, so the small repetition improves usability and clarity rather than warranting consolidation.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These wrappers intentionally provide distinct public API entry points and signatures/documentation for different HTTP verbs and contexts (module-level vs Session methods), so the small delegation-based repetition is appropriate.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally separate convenience wrappers for different public APIs and HTTP verbs, with small but meaningful signature and behavior differences such as Session.get setting allow_redirects by default.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C3": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions differ only by the selected hashlib algorithm and can be cleanly replaced by one helper parameterized by the hash constructor without harming clarity.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions differ only by the selected hashlib algorithm and can be cleanly replaced by one parameterized UTF-8 hashing helper without losing clarity.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These wrappers differ only by the selected hashlib algorithm and can be cleanly replaced by a single helper parameterized by the hash function without losing clarity.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These helpers differ only by the chosen hashlib constructor and can be cleanly replaced by a single parameterized UTF-8 hashing helper without losing clarity.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These tiny wrappers intentionally provide named, algorithm-specific helpers with identical UTF-8 coercion semantics, and merging them into a generic function would reduce call-site clarity for negligible maintenance benefit.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C4": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although structurally similar, the two methods intentionally encode different semantics\u2014one returns the first match arbitrarily while the other detects and raises on duplicate matches\u2014so merging them would obscure behavior or add awkward control flow.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although structurally similar, these functions intentionally implement different semantics\u2014one returns the first match arbitrarily while the other detects duplicates and raises CookieConflictError\u2014so merging them would obscure behavior or require awkward mode flags.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although structurally similar, the functions intentionally encode different semantics\u2014one returns the first match arbitrarily while the other detects duplicates and raises CookieConflictError\u2014so merging them would likely obscure behavior for little benefit.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although structurally similar, these methods intentionally encode different semantics\u2014one returns the first match arbitrarily while the other detects duplicates and raises CookieConflictError\u2014so merging them would obscure behavior or require a less clear flag-driven implementation.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although structurally similar, the functions intentionally encode different semantics\u2014one returns the first match arbitrarily while the other detects duplicates and raises CookieConflictError\u2014so merging would likely obscure behavior rather than simplify it.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C5": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These tiny iterator helpers intentionally expose distinct public APIs with different yielded attributes, so the minimal repetition is clear and idiomatic rather than worth abstracting.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, standard mapping-style convenience iterators with different yielded attributes, and merging them would reduce clarity without meaningful maintenance benefit.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, conventional companion iterator methods with different yielded attributes, and merging them would likely hurt clarity more than it would reduce meaningful duplication.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, idiomatic parallel iterator methods with different yielded attributes, and merging them would likely hurt clarity more than it would reduce meaningful duplication.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, standard dict-like adapters with different yielded attributes, and merging them would likely reduce clarity more than it would reduce meaningful duplication.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C6": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, clear convenience methods with different public semantics, and abstracting them into a shared helper would save little while making the code less direct.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, clear convenience methods for different cookie attributes, and consolidating them via a parameterized helper would likely reduce readability more than it would meaningfully reduce maintenance cost.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These methods are tiny, clear, and semantically distinct convenience APIs, so abstracting them would add indirection with little maintenance benefit.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, readable convenience methods with different attribute intent, and abstracting them into a shared helper would add indirection with little real maintenance benefit.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are tiny, clear convenience methods exposing distinct domain- and path-specific APIs, so the minor duplication is acceptable and a shared abstraction would likely reduce readability more than it helps.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C7": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are two distinct public properties with closely related but intentionally different semantics, and merging them would likely reduce clarity more than it would reduce meaningful duplication.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are two distinct public properties with closely related but intentionally different semantics, and the tiny repeated predicate is clearer and more stable than forcing a shared helper.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are two distinct public semantic predicates with overlapping but intentionally different status-code sets, so the tiny repetition preserves clarity and avoids obscuring their separate meanings.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These properties intentionally expose two distinct HTTP semantics with simple, explicit predicates, so sharing an implementation would add indirection without meaningful reduction in complexity.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are distinct public properties with closely related but intentionally different predicates, and merging them would likely reduce API clarity more than it would meaningfully remove duplication.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C8": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although they share validation logic, the functions intentionally produce different normalized representations and have subtly different handling for mapping-like inputs, so separate implementations are justified.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although structurally similar, these functions intentionally produce different output types and one has mapping-specific handling via items(), so merging them would likely obscure their distinct API contracts more than it would reduce meaningful duplication.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although they share validation logic, the functions intentionally provide different output contracts and item-handling semantics\u2014one always builds an OrderedDict while the other preserves pairs as a list and treats mapping-like objects via .items().",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Although they share validation logic, the functions intentionally provide different normalization semantics and outputs\u2014one preserving mapping construction behavior via OrderedDict(value), the other explicitly producing a list and handling mapping-like objects with .items().",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions intentionally produce different output types and one has mapping-specific handling via .items(), so the small shared validation logic does not justify merging their implementations.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ]
+}

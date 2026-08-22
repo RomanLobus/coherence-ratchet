@@ -161,8 +161,15 @@ def test_an_unreadable_change_is_not_measured_rather_than_clean():
     assert _run(d, ["advise", "billing", "--staged"]) == EXIT_NOT_MEASURED
 
 
-def test_there_is_no_option_to_fail_on_a_candidate():
-    """The absence is the design, so it is asserted rather than assumed."""
+def test_no_value_of_fail_on_lets_a_candidate_fail_a_build():
+    """The invariant, tested as behaviour rather than as spelling.
+
+    The predecessor asserted `set(action.choices) == {"ratified", "any", "none"}`. It read as a
+    guarantee against failing on a candidate and was in fact a lock holding `any` in place, which is
+    the one value that did exactly that: `--fail-on any` tested every finding rather than the ratified
+    ones, so a candidate-only run exited 1. Driving every advertised choice through a candidate-only
+    workspace cannot be satisfied by renaming a flag, which is the point.
+    """
     import argparse
 
     parser = argparse.ArgumentParser()
@@ -171,4 +178,9 @@ def test_there_is_no_option_to_fail_on_a_candidate():
     action = next(a for a in sub.choices["advise"]._actions if a.dest == "fail_on")
 
     assert "candidate" not in action.choices
-    assert set(action.choices) == {"ratified", "any", "none"}
+    assert action.default == "ratified"
+
+    for choice in action.choices:
+        workspace = _repo_with_a_copied_helper()
+        code = _run(workspace, ["advise", "billing", "--staged", "--fail-on", choice])
+        assert code != EXIT_CROSSED, f"--fail-on {choice} failed a build on a candidate"

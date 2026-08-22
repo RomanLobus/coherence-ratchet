@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are tiny, readable convenience methods with different attribute intent, and abstracting them into a shared helper would add indirection with little real maintenance benefit.","confidence":"high"}

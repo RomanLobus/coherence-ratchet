@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"This group mixes both module-level verb helpers and Session verb methods, so it does not match exactly one single catalogue entry.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are intentional public convenience wrappers for distinct HTTP verbs, and merging them would hurt API clarity more than it would reduce meaningful duplication.", "confidence": "high"}

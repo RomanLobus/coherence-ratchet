@@ -122,7 +122,7 @@ def test_a_chosen_threshold_actually_changes_the_reading():
 
 
 def test_the_shipped_default_is_unchanged_when_no_threshold_is_passed():
-    """Every published fixture must read exactly as before."""
+    """Every fixture the book prints must read exactly as before."""
     explicit = measure_all(BILLING, sim_threshold=calibrate.SIM_THRESHOLD).to_dict()
     implicit = measure_all(BILLING).to_dict()
 

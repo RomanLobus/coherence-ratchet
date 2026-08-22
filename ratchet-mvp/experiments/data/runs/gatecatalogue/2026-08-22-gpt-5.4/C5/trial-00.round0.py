@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are paired dictionary-style iterator accessors over different cookie attributes, which does not match any of the three sanctioned shortcut or hook-dispatch patterns.","confidence":"high"}

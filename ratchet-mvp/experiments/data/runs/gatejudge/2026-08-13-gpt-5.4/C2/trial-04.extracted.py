@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are intentionally separate convenience wrappers for different public APIs and HTTP verbs, with small but meaningful signature and behavior differences such as Session.get setting allow_redirects by default.", "confidence": "high"}

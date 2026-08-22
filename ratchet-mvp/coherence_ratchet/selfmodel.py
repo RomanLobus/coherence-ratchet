@@ -378,6 +378,117 @@ def _contract_for(candidate: dict) -> dict:
     return dict(suggestion)
 
 
+DEFAULT_POLICY = "ratification-policy.json"
+
+
+class RatificationRefused(Exception):
+    """A configured policy did not admit this ratifier."""
+
+
+def policy_path_for(intent_path: str) -> str:
+    """The policy file lives beside the intent file it governs."""
+    return os.path.join(os.path.dirname(intent_path) or ".", DEFAULT_POLICY)
+
+
+def check_ratification_policy(path: str, *, approved_by: str, root: str = ".") -> dict | None:
+    """Enforce a team's ratification policy, if it has written one down.
+
+    The book's claim about ratification is a claim about authority, and for most of this tool's life
+    the CLI could not support it: `--by` is a string, a string looks the same whoever types it, and an
+    agent with shell access can pass one. That limit is now stated plainly in the book rather than
+    papered over, and this function is the part a team can do something about.
+
+    **Absent by default, and silent when absent.** No policy file means no check and no output, so
+    every printed block in the manuscript and every existing workflow behaves exactly as before. A
+    team that needs the human-only property mechanically writes the file and gets it enforced.
+
+    Two controls, either or both:
+
+        {"approvers": ["ada@example.com", "grace@example.com"],
+         "require_signed_commit": true}
+
+    `approvers` is an allowlist checked against `--by`, and is enforced here. `require_signed_commit`
+    is about the commit that carries the ratification, which does not exist at this point, so it is
+    enforced by `selfmodel verify-intent` against the commit git says last changed the intent file.
+
+    Neither makes ratification unforgeable by someone with the key and the commit rights. Both make it
+    attributable, which is the property a review path can actually rest on.
+    """
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as stream:
+        policy = json.load(stream)
+
+    approvers = policy.get("approvers")
+    if approvers:
+        if approved_by not in approvers:
+            raise RatificationRefused(
+                f"ratification policy at {path} does not list {approved_by!r} as an approver. "
+                f"Listed: {', '.join(sorted(approvers))}"
+            )
+
+    if policy.get("require_signed_commit"):
+        # This cannot be checked here, and pretending otherwise was worse than not checking. At this
+        # point the ratification has not been written, let alone committed, so the only thing `git
+        # verify-commit HEAD` can inspect is the commit before it. A process could ratify on top of
+        # any signed HEAD and commit the intent unsigned, and the check would have passed. The
+        # property is real but it is a property of a commit that does not exist yet, so it is
+        # enforced by `selfmodel verify-intent` at the point where that commit does exist.
+        print(
+            f"note: {path} sets require_signed_commit. The commit carrying this ratification does "
+            "not exist yet, so it cannot be verified here. Run `coherence-ratchet selfmodel "
+            "verify-intent <intent>` in CI to enforce it against the commit that introduces the "
+            "change.",
+            file=sys.stderr,
+        )
+
+    return policy
+
+
+def verify_intent(intent_path: str, *, policy_path: str | None = None, root: str | None = None) -> dict:
+    """Check the commit that last changed the intent file, which is the one the policy is about.
+
+    `check_ratification_policy` runs before the intent file is written, so the signature it could
+    inspect is never the signature that matters. This runs afterwards, against the commit git says
+    last touched the file, and is the surface a CI job should call.
+    """
+    import subprocess
+
+    root = root or (os.path.dirname(intent_path) or ".")
+    path = policy_path or policy_path_for(intent_path)
+    policy = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+    if not policy.get("require_signed_commit"):
+        return {"checked": False, "reason": "no policy requires a signed commit"}
+
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, check=False)
+
+    rev = git("log", "-1", "--format=%H", "--", os.path.abspath(intent_path))
+    sha = rev.stdout.strip()
+    if rev.returncode != 0 or not sha:
+        raise RatificationRefused(
+            f"{intent_path} has no commit history, so the signature the policy requires cannot "
+            "exist. Commit the intent file before verifying it."
+        )
+
+    verified = git("verify-commit", sha)
+    if verified.returncode != 0:
+        raise RatificationRefused(
+            f"the commit that last changed {intent_path} ({sha[:12]}) does not carry a good "
+            f"signature; `git verify-commit` exited {verified.returncode}. Sign that commit, or "
+            "remove require_signed_commit from the policy."
+        )
+
+    signer = git("log", "-1", "--format=%GS", sha).stdout.strip()
+    approvers = policy.get("approvers")
+    if approvers and signer not in approvers:
+        raise RatificationRefused(
+            f"the commit that last changed {intent_path} ({sha[:12]}) is signed by {signer!r}, "
+            f"who is not an approver. Listed: {', '.join(sorted(approvers))}"
+        )
+    return {"checked": True, "commit": sha, "signer": signer}
+
+
 def ratify(model: dict, intent: dict, candidate_id: str, *, approved_by: str, rationale: str,
            scope: str, exceptions: list[str] | None = None,
            approved_at: str | None = None, review_date: str | None = None,
@@ -530,13 +641,16 @@ def write(root: str, out_path: str) -> dict:
 
 def register_cli(sub) -> None:
     p = sub.add_parser("selfmodel", help="derive facts, query evidence, ratify intent, or render context")
-    p.add_argument("action", choices=["derive", "query", "ratify", "context"])
+    p.add_argument("action", choices=["derive", "query", "ratify", "context", "verify-intent"])
     p.add_argument("target", help="source path (derive/context) or a question (query)")
     p.add_argument("--model", default=DEFAULT_MODEL, help="path to selfmodel.json")
     p.add_argument("--intent", default=DEFAULT_INTENT, help="path to the human-owned intent file")
     p.add_argument("--llm", action="store_true", help="use the optional LLM matcher (needs an API key)")
     p.add_argument("--out", help="write output to this path (context)")
     p.add_argument("--by", dest="approved_by", help="ratifier identity (ratify)")
+    p.add_argument("--policy", help="ratification policy file (ratify); defaults to "
+                                    "ratification-policy.json beside the intent file, and no policy "
+                                    "file means no check")
     p.add_argument("--rationale", help="why the candidate is sanctioned (ratify)")
     p.add_argument("--scope", help="scope of a ratification (required; no default)")
     p.add_argument("--exception", action="append", default=[], help="declared exception (repeatable)")
@@ -575,6 +689,17 @@ def run_cli(args) -> int:
         if not (args.approved_by and args.rationale):
             print("selfmodel ratify requires --by and --rationale", file=sys.stderr)
             return 2
+        # Authority is checked before any work is done. A ratifier the policy will not admit is
+        # refused whatever the state of the model file, because the refusal is about who is asking.
+        try:
+            check_ratification_policy(
+                args.policy or policy_path_for(args.intent),
+                approved_by=args.approved_by,
+                root=os.path.dirname(args.intent) or ".",
+            )
+        except RatificationRefused as exc:
+            print(str(exc), file=sys.stderr)
+            return 2
         model = _load_json(args.model)
         intent = _load_json(args.intent) if os.path.exists(args.intent) else empty_intent(model)
         try:
@@ -593,6 +718,19 @@ def run_cli(args) -> int:
             stream.write("\n")
         print(f"candidate {args.target} ratified -> {args.intent}")
         return 0
+    if args.action == "verify-intent":
+        try:
+            report = verify_intent(args.intent, policy_path=args.policy,
+                                   root=os.path.dirname(args.intent) or ".")
+        except RatificationRefused as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        if not report["checked"]:
+            print(report["reason"])
+        else:
+            print(f"intent signed by {report['signer']} in {report['commit'][:12]}")
+        return 0
+
     if args.action == "context":
         model = _load_json(args.model)
         fresh = derive(args.target)

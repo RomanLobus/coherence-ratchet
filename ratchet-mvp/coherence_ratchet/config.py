@@ -6,7 +6,7 @@ Two rules make this safe to ship in a book whose printed output is byte-verified
 A repository with no `coherence/config.json` measures exactly as it did before this file existed, so
 no printed block can move because a setting appeared.
 
-**Every applied setting is reported.** A threshold that silently differs from the default is how two
+**Every applied setting is reported.** A threshold that silently differs from the book's is how two
 readers compare numbers that were never comparable. Anything this module changes, the caller prints.
 
 The format is JSON rather than TOML: `tomllib` is 3.11+, the package supports 3.10, and adding

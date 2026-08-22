@@ -409,10 +409,11 @@ def register_cli(sub) -> None:
     p.add_argument("--layering", help="declared layering spec (JSON: order, layer_of, rules, responsibilities)")
     p.add_argument("--trials", type=int, default=5)
     p.add_argument("--quorum", type=int, default=4, help="trials that must agree to CLEAR (conservative)")
-    p.add_argument("--fail-on", choices=["none", "violation", "surface"], default="none",
-                   help="exit 1 on a declared-layering violation, or on any finding. "
-                        "Default advises (exit 3) and fails nothing: a surfaced cluster is a "
-                        "candidate nobody ratified, and a candidate may not fail a build")
+    p.add_argument("--fail-on", choices=["none", "violation"], default="none",
+                   help="exit 1 on a declared-layering violation, measured against an order a "
+                        "person declared. Default advises (exit 3) and fails nothing. There is no "
+                        "option that fails on a surfaced cluster: `surface` was removed because a "
+                        "surfaced cluster is a candidate nobody ratified")
     p.add_argument("--json", action="store_true")
 
 
@@ -438,13 +439,12 @@ def run_cli(args) -> int:
     if report.get("judge_errors") and not cleared and not surfaced and not report.get("skipped"):
         return EXIT_NOT_MEASURED
 
-    # A surfaced cluster is advisory: nobody ratified it, so it may not fail a build by default. A
-    # layering violation is measured against an order a person declared, so it is available as a
-    # failure under --fail-on.
+    # A surfaced cluster is advisory: nobody ratified it, so it may not fail a build under any flag.
+    # Not "by default" -- that hedge is how `--fail-on surface` came to exist and contradict the
+    # invariant. A layering violation is measured against an order a person declared, so it alone is
+    # available as a failure.
     fail_on = getattr(args, "fail_on", "none")
     if fail_on == "violation" and violations:
-        return EXIT_CROSSED
-    if fail_on == "surface" and (violations or surfaced):
         return EXIT_CROSSED
 
     return EXIT_ADVISORY if (violations or surfaced) else EXIT_HELD

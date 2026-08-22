@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are two internal cookie lookup helpers with different conflict-handling behavior, which does not match any sanctioned catalogue pattern for verb shortcuts or hook dispatch.","confidence":"high"}

@@ -47,7 +47,8 @@ trials out of thirty patched `invoice_total`, returned it as the whole change, a
 
 The self-model arm reached both sites in every trial. The arm still bundles naming a site with
 granting access to it, which is faithful to how a query works and is the same bundling the original
-run disclosed; a purist split remains untested.
+run disclosed. The factorial below splits the two factors and supersedes this paragraph: the
+split was tested on 22 August 2026, and access rather than naming is what this arm was measuring.
 
 ## Replication across a second vendor
 
@@ -100,13 +101,74 @@ where it looks and wrong where it does not, with no error, no test failure in th
 no signal at review beyond someone knowing that a second site exists. That is coherence debt being
 created, in one commit, by an agent behaving reasonably.
 
+## The factorial, 22 August 2026 — the confound resolved, and the result reversed
+
+The two arms above differ in two ways at once: the self-model arm receives the self-model *and* the
+`analytics.py` source the model points at. The write-up disclosed the bundling and left the split
+untested, and the manuscript then presented the self-model as the cause. This run tests the two factors
+independently, all four cells, thirty trials per cell, on both families at their dated snapshots.
+
+|  | self-model absent | self-model present |
+|---|---|---|
+| **analytics withheld** | `blind` | `named_only` |
+| **analytics supplied** | `source_only` | `selfmodel` |
+
+### Result
+
+| arm | haiku consistent | gpt consistent | haiku both-discounted | haiku destructive |
+|---|---:|---:|---:|---:|
+| blind | **0/30** | **0/30** | 0/30 | 0/30 |
+| named_only | **0/30** | **0/30** | 25/30 | **26/30** |
+| source_only | **30/30** | **30/30** | 30/30 | 0/30 |
+| selfmodel | **30/30** | **30/30** | 30/30 | 0/30 |
+
+`claude-haiku-4-5-20251001` and `gpt-5.4-2026-03-05`, 30 trials per arm per family, every response and
+a manifest committed under `data/runs/nochokepoint/2026-08-22-*`.
+
+**Access is what the original number measured.** `source_only` reaches 30/30 on both families with no
+self-model present at all. Where the second site is in the context window, the derived model adds
+nothing this fixture can detect, so the 0/30 against 30/30 reported above is a measurement of source
+access and not of grounding. Any claim that the derived model produced that separation is unsupported,
+and the manuscript has been corrected.
+
+**Naming without access never produced a correct change, on either family.** The two families fail it
+differently, and the difference is the more useful half of the run. `gpt-5.4` returns 0/30 on
+both-discounted: told that `shop/analytics.py` computes a total and given no way to read it, it patches
+billing and stops. `haiku-4-5` returns 25/30 on both-discounted and **26/30 destructive**: it rebuilt
+the module it had never read from the two lines of description, got the arithmetic right, and silently
+dropped `order_bucket`, the sibling function the description did not mention. Every one of those
+twenty-five "successes" deleted live code.
+
+The task says "Change nothing else", so those trials are failures, and the corrected oracle records
+them as such. Scoring only the returned number would have printed 25/30 as a win for naming.
+
+### What this adds, rather than only what it removes
+
+A named site the agent cannot reach is worse than an unnamed one. The blind arm patches one site and
+leaves the other alone, which is a divergence a reviewer can find. The `named_only` arm, on the family
+that complied, produced a plausible replacement file with a function missing, which is a regression a
+reviewer has to notice the absence of. This is the fabrication hazard measured on this book's own
+fixture: an agent asked to act acts, and a description is not a file. It corroborates, from a different
+direction, the external finding that a missing fact produces wrong work rather than absent work
+(Mohammadi et al., arXiv:2608.16630, 2026), and it is the sharpest available argument for a grounding
+pack naming only what the agent can retrieve.
+
+### Scorer corrected after the run, prompts unchanged
+
+The preservation check was added to `score_code` after the responses were collected, so
+`probe_sha256` moved while every `prompt_sha256` above stayed fixed. The persisted responses were
+re-scored offline; no trial was re-billed and no prompt changed. The correction is recorded here rather
+than folded in silently, because it turned 25 apparent successes into 25 failures.
+
 ## Honest limits
 
 - Thirty trials per arm per family, two families, two dated snapshots, a four-module fixture. The
   separation is complete in both, so a larger n would tighten intervals without changing direction.
   Two vendors is not a survey of models.
-- The self-model arm names the site *and* supplies its source. Naming alone, with retrieval left to
-  the agent, is the untested purist split and the one a production implementation faces.
+- The self-model arm names the site *and* supplies its source. Naming alone was the untested split
+  when this limit was written; the factorial tested it and found it worse than silence on one family
+  (26/30 destructive). What remains untested is naming plus a retrieval tool the agent can call,
+  which is the shape a production implementation would take.
 - The two sites diverge in field shape (`lines`/`qty`/`price` against `items`/`count`/`cents`), which
   is what makes them independent and also what makes them findable once named. Two sites that diverge
   less obviously would be a harder case for the deriver, not for the agent.
@@ -116,9 +178,21 @@ created, in one commit, by an agent behaving reasonably.
 
 ## Reproduce
 
+The four-cell factorial is the run the figures come from. The 2026-08-12 directories hold the
+superseded two-arm run and are kept as the record of what was claimed before the split was tested.
+
+    # re-derive every figure from the committed responses; no API key, no model call
+    python3 experiments/harness/dispatch.py --probe probe_nochokepoint --rescore \
+        experiments/data/runs/nochokepoint/2026-08-22-haiku-4-5
+    python3 experiments/harness/dispatch.py --probe probe_nochokepoint --verify \
+        experiments/data/runs/nochokepoint/2026-08-22-haiku-4-5
+
+    # and to buy a fresh sweep against the vendor
     python3 experiments/harness/dispatch.py --probe probe_nochokepoint.py \
         --trials 30 --model claude-haiku-4-5-20251001 \
-        --out experiments/data/runs/nochokepoint/2026-08-12-haiku-4-5
-    python3 probe_nochokepoint.py --tally experiments/data/runs/nochokepoint/2026-08-12-haiku-4-5
+        --out experiments/data/runs/nochokepoint/<new-date>-haiku-4-5
 
-Raw responses and the manifest are committed. Scoring re-runs offline and needs no API key.
+Raw responses, the collection manifest and `rescore.json` are committed for both families.
+`--verify` reports `scores_current` true: the committed scores were produced by the committed
+scorer. It also reports `probe_changed` true, which is the honest record of the scorer correction
+described below and not a failure of the run.

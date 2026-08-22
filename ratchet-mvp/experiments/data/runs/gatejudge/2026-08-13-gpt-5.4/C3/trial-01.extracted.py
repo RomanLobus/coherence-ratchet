@@ -1,0 +1,1 @@
+{"verdict": "CONSOLIDATE", "reason": "These functions differ only by the selected hashlib algorithm and can be cleanly replaced by one parameterized UTF-8 hashing helper without losing clarity.", "confidence": "high"}

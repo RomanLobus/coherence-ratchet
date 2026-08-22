@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"This group mixes two sanctioned categories—module-level verb helpers and Session verb methods—so it is not an instance of exactly one catalogue entry.","confidence":"high"}

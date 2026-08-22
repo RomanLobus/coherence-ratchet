@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two utility methods collect different cookie attributes and do not match any sanctioned catalogue pattern for verb shortcuts or hook dispatch.","confidence":"high"}

@@ -2,12 +2,6 @@
 
 Every write-up in this directory is classed by how far a reader can check it. Class A write-ups are deterministic: a script or committed fixture in this repository reproduces the numbers with no language-model call. Class B write-ups are language-model probes that re-run against an API key, from a committed harness and fixture. Class C write-ups are recorded runs: documented in full (design, counts, caveats) but not mechanically re-runnable, usually because the trial fixtures lived in a session scratchpad rather than the repository, or because the judging prompts and catalogues were never committed. Where a write-up sat between B and C, it is classed C and the notes column says why.
 
-## These are dated records, kept as written
-
-These write-ups are research notes, not documentation. They are preserved as they were written on the day the experiment ran, including the ones whose result was negative, inconclusive, or later superseded — a superseded record carries a banner at the top rather than being deleted or quietly corrected. Reading one means reading what was known at that date.
-
-Two consequences worth stating rather than tidying away. Many write-ups refer to "the book", because these experiments were run to settle questions for an accompanying book that is still in draft; the tool itself does not depend on that book and is documented on its own terms in the repository README. And most write-ups end with a `→ book:` routing line naming the chapters a finding was destined for. Those chapter numbers refer to the draft as it stood when the note was written, and the draft has been restructured since, so treat them as provenance rather than as a table of contents.
-
 ## Open: the longitudinal dumps do not fully re-verify (12 August 2026)
 
 `longitudinal_arch.py --verify` against the pinned SHAs fails on flask and requests, on two

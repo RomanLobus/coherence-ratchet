@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These methods are tiny, clear, and semantically distinct convenience APIs, so abstracting them would add indirection with little maintenance benefit.","confidence":"high"}

@@ -35,10 +35,7 @@ def main() -> int:
     for label, note, files in bs.STEPS:
         dest = os.path.join(states_dir, label)
         bs.materialize(files, dest)
-        # Measure the package directory, not its parent: the analyser names a package after the
-        # directory it is given, so measuring the parent reads zero dependency edges. Since 0.5.0
-        # that mistake is refused rather than silently returning an empty snapshot.
-        snapshots.append((label, note, measure(os.path.join(dest, "billing"))))
+        snapshots.append((label, note, measure(dest)))
 
     max_clusters = max(s.redundant_clusters for _, _, s in snapshots) or 1
     max_ratio = max(s.duplication_ratio for _, _, s in snapshots) or 1.0

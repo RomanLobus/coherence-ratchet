@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are two distinct public semantic predicates with overlapping but intentionally different status-code sets, so the tiny repetition preserves clarity and avoids obscuring their separate meanings.","confidence":"high"}

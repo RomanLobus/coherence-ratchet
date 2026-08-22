@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "Although they share validation logic, the functions intentionally provide different normalization semantics and outputs—one preserving mapping construction behavior via OrderedDict(value), the other explicitly producing a list and handling mapping-like objects with .items().", "confidence": "high"}

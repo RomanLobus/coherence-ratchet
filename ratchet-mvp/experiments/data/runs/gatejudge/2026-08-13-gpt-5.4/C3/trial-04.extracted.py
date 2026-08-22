@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These tiny wrappers intentionally provide named, algorithm-specific helpers with identical UTF-8 coercion semantics, and merging them into a generic function would reduce call-site clarity for negligible maintenance benefit.","confidence":"high"}

@@ -1,8 +1,8 @@
-"""Pins the checkout-pricing fixture to its published numbers.
+"""Pins the checkout-pricing fixture to the numbers the book prints.
 
 The two states under playground/_states/{05-checkout-clean,06-checkout-cycle}
 are the manuscript's running example. These tests hold the printed metrics
-still: if the fixture drifts, the published transcripts go stale and CI says so.
+still: if the fixture drifts, the book's transcripts go stale and CI says so.
 
 Run from ratchet-mvp/:  python3 tests/run.py   (or python -m pytest -q)
 """

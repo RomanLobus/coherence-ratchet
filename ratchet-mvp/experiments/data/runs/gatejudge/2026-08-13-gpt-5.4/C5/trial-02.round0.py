@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are tiny, conventional companion iterator methods with different yielded attributes, and merging them would likely hurt clarity more than it would reduce meaningful duplication.", "confidence": "high"}

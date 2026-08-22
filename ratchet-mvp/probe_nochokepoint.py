@@ -18,14 +18,30 @@ without creating a path between the two totals, and `customers.py` reads neither
 return 1300 on the fixture order, so a correct change leaves both returning 1170 and the oracle is one
 number rather than a judgement.
 
-Two arms:
+Four arms, a full factorial over the two things the original two arms varied together:
 
-  blind      the agent sees billing, shipping and customers. The analytics site is not in context.
-  selfmodel  the same, plus a derived self-model naming every site that computes an order total, and
-             the analytics source the model pointed at.
+                       | self-model absent | self-model present
+  analytics withheld   | blind             | named_only
+  analytics supplied   | source_only       | selfmodel
 
-The second arm bundles naming a site with granting access to it, which is faithful to how a query
-works and is the same bundling the original run disclosed. A purist split remains untested.
+  blind        the agent sees billing, shipping and customers. The analytics site is not in context.
+  named_only   the same three files, plus a self-model naming both total sites. The analytics source
+               is withheld, so the site is named and not readable.
+  source_only  all four files, no self-model. The site is readable and nothing points at it.
+  selfmodel    all four files plus the self-model. Both.
+
+The original run shipped only `blind` and `selfmodel`, which differ in two ways at once, so its
+0/30 against 30/30 could not say whether naming or access produced the effect. `source_only` is the
+control that settles it: if it lands with `selfmodel`, access is doing the work and the model's naming
+is not what the number measures; if it lands with `blind`, naming is directing attention to a file the
+agent had all along.
+
+One limit belongs in the design rather than the footnotes. The harness is single-turn and the agents
+have no tools, so `named_only` cannot model retrieval: an agent told that `shop/analytics.py` exists
+has no way to read it and cannot return the full source the task asks for. A null result in that arm
+therefore says that naming alone is inert *without* a retrieval path, and says nothing about a
+grounding pack in a harness that has one. That is a narrower claim than the arm's name suggests, and it
+is the reason `source_only` rather than `named_only` is the arm that resolves the confound.
 
 The oracle executes the returned modules against the fixture order. A trial is consistent only when
 both sites return the discounted total; patching billing alone is the divergence bug the probe exists
@@ -76,17 +92,28 @@ def _source(names) -> str:
 BLIND_FILES = ("billing.py", "shipping.py", "customers.py")
 ALL_FILES = ("billing.py", "shipping.py", "customers.py", "analytics.py")
 
-CONDITIONS = ("blind", "selfmodel")
+CONDITIONS = ("blind", "named_only", "source_only", "selfmodel")
+
+_PREAMBLE = "You are making a change to this Python package. Its source is below.\n\n"
 
 
 def build_prompt(condition: str) -> str:
-    if condition == "blind":
-        return ("You are making a change to this Python package. Its source is below.\n\n"
-                + _source(BLIND_FILES) + "\n\n" + TASK)
-    if condition == "selfmodel":
-        return ("You are making a change to this Python package. Its source is below.\n\n"
-                + _source(ALL_FILES) + "\n\n" + SELFMODEL + "\n" + TASK)
-    raise ValueError(condition)
+    """One preamble, one task, and the two factors varied independently.
+
+    Written as a table rather than a chain of branches so that a reader can see the factorial: the
+    files supplied on one axis, the self-model on the other.
+    """
+    plan = {
+        "blind": (BLIND_FILES, False),
+        "named_only": (BLIND_FILES, True),
+        "source_only": (ALL_FILES, False),
+        "selfmodel": (ALL_FILES, True),
+    }
+    if condition not in plan:
+        raise ValueError(condition)
+    files, with_model = plan[condition]
+    middle = (SELFMODEL + "\n") if with_model else ""
+    return _PREAMBLE + _source(files) + "\n\n" + middle + TASK
 
 
 # --- deterministic oracle ---------------------------------------------------
@@ -130,8 +157,31 @@ def _call(source: str, func: str):
         return None
 
 
+def _top_level_defs(source: str) -> set:
+    """Top-level function names in a produced module, by AST where it parses."""
+    import ast
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return {l.split("(")[0].replace("def ", "").strip()
+                for l in source.splitlines() if l.startswith("def ")}
+    return {n.name for n in tree.body if isinstance(n, ast.FunctionDef)}
+
+
+def _real_defs(name: str) -> set:
+    return _top_level_defs(_read(name + ".py"))
+
+
 def score_code(text: str, *_names) -> dict:
-    """Did the change reach both sites? Executed, not inspected."""
+    """Did the change reach both sites, and did it keep everything it was told to keep?
+
+    The behavioural half executes the produced modules. The preservation half compares their
+    top-level definitions against the fixture's, because the task says "Change nothing else" and an
+    arm that withholds a file invites the agent to rebuild it from a description. On the 2026-08-22
+    run every one of haiku's twenty-five `named_only` successes silently dropped `order_bucket`: the
+    behaviour was right and the module was a plausible replacement for a file the agent had never
+    read. Scoring only the returned number would have recorded that as a clean result.
+    """
     mods = _modules_from(text)
 
     billing_src = mods.get("billing")
@@ -146,11 +196,25 @@ def score_code(text: str, *_names) -> dict:
 
     billing_ok = billing_effective == DISCOUNTED
     analytics_ok = analytics_effective == DISCOUNTED
+    both_discounted = billing_ok and analytics_ok
+
+    # "Change nothing else" is part of the task, so a returned module that has lost a definition the
+    # fixture had is not a correct change however the number comes out.
+    dropped = {}
+    for mod, src in (("billing", billing_src), ("analytics", analytics_src)):
+        if src is None:
+            continue
+        missing = _real_defs(mod) - _top_level_defs(src)
+        if missing:
+            dropped[mod] = sorted(missing)
 
     return {
         "billing_discounted": billing_ok,
         "analytics_discounted": analytics_ok,
-        "consistent": billing_ok and analytics_ok,
+        "both_discounted": both_discounted,
+        "dropped_defs": dropped,
+        "destructive": bool(dropped),
+        "consistent": both_discounted and not dropped,
         "divergence_bug": billing_ok and not analytics_ok,
         "touched_analytics": analytics_src is not None,
         "billing_value": billing_effective,

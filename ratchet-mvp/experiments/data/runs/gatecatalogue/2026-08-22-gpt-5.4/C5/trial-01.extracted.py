@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are dict-like iterator accessors for keys and values on a cookie jar, which do not match the catalogue's verb-shortcut or hook-dispatch patterns.","confidence":"high"}

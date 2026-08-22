@@ -132,7 +132,13 @@ def test_ratify_is_advertised_so_the_boundary_is_discoverable():
     assert "REFUSES" in entry["description"]
 
 
-def test_an_agent_cannot_ratify():
+def test_the_mcp_server_refuses_ratification():
+    """Renamed from `test_an_agent_cannot_ratify`, which is not what it asserts.
+
+    What it asserts is that this server's handler refuses. An agent with shell access can still run
+    the CLI, as the helper at the top of this file does, so the old name promised a property the tool
+    does not have. `test_ratification_policy.py` covers the part a team can actually enforce.
+    """
     server = _server(_workspace())
     result = _call(server, "coherence_ratify",
                    {"candidate_id": "reuse_helper:abc", "rationale": "looks fine to me"})

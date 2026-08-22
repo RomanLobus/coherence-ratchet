@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These properties intentionally expose two distinct HTTP semantics with simple, explicit predicates, so sharing an implementation would add indirection without meaningful reduction in complexity.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"verdict":"CONSOLIDATE","reason":"These helpers differ only by the chosen hashlib constructor and can be cleanly replaced by a single parameterized UTF-8 hashing helper without losing clarity.","confidence":"high"}

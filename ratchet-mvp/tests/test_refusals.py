@@ -4,7 +4,7 @@ Every test here pins a way the tool could previously report success while having
 The first one is the most important test in the package: `measure` against a path that does not
 exist returned a complete all-zero snapshot and exit 0, so a renamed directory or a typo in a CI
 invocation made `check` pass, and `check --tighten` read the zeros as an improvement and ratcheted
-every ceiling to zero. Readers are told to put this command in their pipeline. That
+every ceiling to zero. The book tells a reader to put this command in their pipeline. That
 instruction is only honest while these tests pass.
 """
 
@@ -152,7 +152,7 @@ def test_tighten_is_unaffected_by_a_partial_snapshot():
     assert declined == {}
 
 
-# --- the documented CLI surface -------------------------------------------
+# --- the CLI surface the book prints ---------------------------------------
 
 def test_every_subcommand_registers():
     """A swallowed import error used to delete a verb from the CLI silently, with every test still

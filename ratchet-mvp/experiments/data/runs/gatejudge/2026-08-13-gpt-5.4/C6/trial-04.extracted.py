@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are tiny, clear convenience methods exposing distinct domain- and path-specific APIs, so the minor duplication is acceptable and a shared abstraction would likely reduce readability more than it helps.","confidence":"high"}

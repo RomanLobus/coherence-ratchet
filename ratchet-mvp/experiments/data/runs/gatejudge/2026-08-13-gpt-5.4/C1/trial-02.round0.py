@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are intentional public convenience wrappers for distinct HTTP verbs with method-specific signatures and documentation, so the small repetition preserves API clarity more than a shared helper would improve maintainability.","confidence":"high"}

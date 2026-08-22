@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are intentional convenience wrappers for different HTTP verbs and call contexts (Session methods vs module-level functions), and collapsing them would likely hurt API clarity more than it would reduce meaningful duplication.", "confidence": "high"}

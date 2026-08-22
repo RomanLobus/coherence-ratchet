@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are Response properties checking different redirect conditions, not verb shortcut wrappers or hook dispatch helpers from the sanctioned catalogue.","confidence":"high"}

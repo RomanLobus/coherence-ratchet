@@ -1,0 +1,1 @@
+{"pattern": "http-verb-shortcut", "reason": "These are module-level HTTP verb helper functions in requests.api that differ mainly by verb name and forwarded arguments while delegating to request(), matching the sanctioned symmetric public API pattern.", "confidence": "high"}

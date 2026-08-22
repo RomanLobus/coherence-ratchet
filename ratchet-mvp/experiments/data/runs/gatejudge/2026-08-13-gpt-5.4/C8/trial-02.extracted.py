@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"Although they share validation logic, the functions intentionally provide different output contracts and item-handling semantics—one always builds an OrderedDict while the other preserves pairs as a list and treats mapping-like objects via .items().","confidence":"high"}

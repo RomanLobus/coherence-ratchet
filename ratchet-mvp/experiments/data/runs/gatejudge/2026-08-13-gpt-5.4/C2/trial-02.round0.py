@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are intentional thin convenience wrappers exposing distinct public APIs and signatures for session-bound versus module-level HTTP verbs, so the small repetition improves usability and clarity rather than warranting consolidation.", "confidence": "high"}

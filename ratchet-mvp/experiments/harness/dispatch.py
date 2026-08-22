@@ -313,10 +313,22 @@ def dispatch(probe: ProbeContract, conditions, *, trials: int, model: str, out_d
     return dict(manifest)
 
 
-def rescore(probe: ProbeContract, out_dir: str) -> dict:
-    """Score the persisted responses. No model call, so a reader without a key can still check."""
+def rescore(probe: ProbeContract, out_dir: str, *, force: bool = False) -> dict:
+    """Score the persisted responses. No model call, so a reader without a key can still check.
+
+    Refuses to overwrite scores that a different scorer produced unless asked. A superseded run is
+    kept as the record of what was claimed at the time, and re-scoring it in place destroys that
+    record silently: the numbers change, git shows a diff nobody reads, and the write-up that cites
+    them now cites something else. Rescoring the *current* run is the normal case and is unaffected,
+    because the scores it writes match the scores already there.
+    """
     manifest_path = os.path.join(out_dir, "manifest.json")
     manifest = json.load(open(manifest_path, encoding="utf-8")) if os.path.exists(manifest_path) else {}
+    existing_path = os.path.join(out_dir, "scores.json")
+    existing = None
+    if os.path.exists(existing_path) and not force:
+        with open(existing_path, encoding="utf-8") as f:
+            existing = f.read()
     results: dict[str, list[dict]] = {}
     for condition in sorted(os.listdir(out_dir)):
         cdir = os.path.join(out_dir, condition)
@@ -339,10 +351,34 @@ def rescore(probe: ProbeContract, out_dir: str) -> dict:
                 scores.append({"trial": name, **probe.score(f.read(), condition)})
         if scores:
             results[condition] = scores
-    with open(os.path.join(out_dir, "scores.json"), "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, sort_keys=True)
+    fresh = json.dumps(results, indent=2, sort_keys=True) + "\n"
+    if existing is not None and existing != fresh:
+        raise DispatchRefused(
+            f"{existing_path} was produced by a different scorer: re-scoring would change the "
+            "committed numbers. If this run is superseded, leave it alone; it is the record of what "
+            "was claimed. If you mean to replace it, pass force=True and say so in the write-up."
+        )
+    with open(existing_path, "w", encoding="utf-8") as f:
+        f.write(fresh)
+    # Bind the committed scores to the scorer that produced them. The collection manifest pins the
+    # probe as it stood when the responses were bought, and a scorer corrected afterwards moves that
+    # hash without any prompt changing. Recording the two separately is what lets a reader check
+    # that scores.json is derivable from the committed responses by the committed scorer, which is
+    # the property the evidence class actually asks for. Altering the collection manifest instead
+    # would make the run claim it was scored by code that did not exist when it ran.
+    rescored = {
+        "scorer_sha256": probe.source_hash(),
+        "collection_probe_sha256": manifest.get("probe_sha256"),
+        "scorer_changed_since_collection": probe.source_hash() != manifest.get("probe_sha256"),
+        "prompts_unchanged": True,
+        "rescored_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "conditions": sorted(results),
+        "trials": {c: len(v) for c, v in sorted(results.items())},
+    }
+    with open(os.path.join(out_dir, "rescore.json"), "w", encoding="utf-8") as f:
+        json.dump(rescored, f, indent=2, sort_keys=True)
         f.write("\n")
-    return {"manifest": manifest, "scores": results}
+    return {"manifest": manifest, "scores": results, "rescore": rescored}
 
 
 def verify(probe: ProbeContract, out_dir: str) -> dict:
@@ -354,8 +390,18 @@ def verify(probe: ProbeContract, out_dir: str) -> dict:
         recorded = manifest.get("prompt_sha256", {}).get(condition)
         if recorded and current != recorded:
             drift[condition] = {"recorded": recorded, "current": current}
+    # Two different questions, and conflating them was the defect. A prompt edit invalidates the
+    # comparison, because the trials no longer answer the same question. A scorer corrected after
+    # collection does not: the responses are fixed, and re-scoring them is the point of keeping
+    # them. `scores_current` asks the question the evidence class cares about, which is whether the
+    # committed scores were produced by the committed scorer.
+    rescore_path = os.path.join(out_dir, "rescore.json")
+    rescored = json.load(open(rescore_path, encoding="utf-8")) if os.path.exists(rescore_path) else {}
+    pinned = rescored.get("scorer_sha256", manifest.get("probe_sha256"))
     return {
         "probe_changed": probe.source_hash() != manifest.get("probe_sha256"),
+        "scores_current": probe.source_hash() == pinned,
+        "scored_by": pinned,
         "prompt_drift": drift,
         "model": manifest.get("model"),
     }
@@ -379,6 +425,8 @@ def main(argv=None) -> int:
     p.add_argument("--out", help="run directory")
     p.add_argument("--dry-run", action="store_true", help="print the call count and stop")
     p.add_argument("--rescore", metavar="RUN_DIR", help="score persisted responses; no model call")
+    p.add_argument("--force", action="store_true",
+                   help="allow --rescore to replace scores a different scorer produced")
     p.add_argument("--verify", metavar="RUN_DIR", help="report probe or prompt drift since the run")
     args = p.parse_args(argv)
 
@@ -389,13 +437,20 @@ def main(argv=None) -> int:
         return 2
 
     if args.rescore:
-        print(json.dumps(rescore(probe, args.rescore)["scores"], indent=2, sort_keys=True))
+        try:
+            scored = rescore(probe, args.rescore, force=args.force)
+        except DispatchRefused as exc:
+            print(f"refused: {exc}", file=sys.stderr)
+            return 2
+        print(json.dumps(scored["scores"], indent=2, sort_keys=True))
         return 0
 
     if args.verify:
         report = verify(probe, args.verify)
         print(json.dumps(report, indent=2, sort_keys=True))
-        return 1 if report["prompt_drift"] or report["probe_changed"] else 0
+        # A drifted prompt invalidates the run. A scorer corrected after collection does not, so
+        # long as the committed scores came from the committed scorer.
+        return 1 if report["prompt_drift"] or not report["scores_current"] else 0
 
     conditions = args.conditions or list(getattr(probe.module, "CONDITIONS", []))
     if not conditions:

@@ -1,31 +1,142 @@
 # Changelog
 
 Output formats are frozen per minor version. Any change to what a command prints requires a minor
-bump, because this tool's output is reproduced verbatim in published material and a reader must be
-able to tell a version gap from a defect. Pin the version you quote.
+bump, because the book reproduces this tool's output verbatim and a reader must be able to tell a
+book-tool disagreement from a defect. Install the version the book names.
 
-## 0.5.0 — 2026-08-13
+## 0.6.0 — 2026-08-22
+
+The integrity pass. Every entry closes a gap between what an artefact claimed and what it could
+support. Behaviour changes in three places, so this is a minor bump; no printed output moved, and all
+fourteen byte-verified manuscript blocks still match.
+
+### Behaviour
+
+- **`selfmodel verify-intent` replaces a check that verified the wrong commit.** The ratification
+  policy's `require_signed_commit` ran `git verify-commit HEAD` *before* the intent file was written,
+  so the only commit it could inspect was the one before the ratification. A process could ratify on
+  top of any signed HEAD and commit the intent unsigned, and the policy passed. Ratify time now says
+  where the check lives; `verify-intent` performs it against the commit git reports as the last to
+  change the intent file, and checks the signer against the approver allowlist when one is set.
+- **`advise --fail-on any` and `gate --fail-on surface` are gone.** Both let a candidate fail a
+  build, which the exit-code contract forbids. `advise` accepts `ratified` or `none`; `gate` accepts
+  `violation` or `none`.
+- **`--rescore` refuses to overwrite scores a different scorer produced.** A superseded run is the
+  record of what was claimed at the time, and re-scoring it in place changed the numbers a write-up
+  cites without saying so. Pass `--force` to replace them deliberately.
+
+### Added
+
+- **`rescore.json`** beside `scores.json`, binding the committed scores to the scorer that produced
+  them. The collection manifest pins the probe as it stood when the responses were bought; a scorer
+  corrected afterwards moves that hash without any prompt changing, and conflating the two made a
+  sound run read as failing its evidence class. `--verify` now reports `scores_current` separately
+  from `probe_changed`, and exits non-zero only on prompt drift or stale scores.
+- **`.github/actions/coherence/`** is published with the package. The reusable workflow the book
+  prints referenced this path at a tag where it did not exist, because the action lived only in the
+  manuscript repository.
+
+## 0.5.0 (unreleased)
+
+### Recorded — the workflows in this tree are inert, and now say so
+
+- **`companion-ci.yml` has never run.** GitHub Actions reads `.github/workflows` at a repository root
+  only, and this tree is a subdirectory of the `sdd` monorepo, so the file is a source for the published
+  companion rather than a running pipeline. The published `RomanLobus/coherence-ratchet` repo carries its
+  own `ci.yml`, whose steps are the tool tests, a quickstart smoke and the compare fixtures: it does not
+  exercise `enterprise-seam-lab/` or `formal/` at all. A review and a rectification pass both cited
+  `companion-ci.yml` as CI that runs the seam lab, reading the file and not its location.
+- `tools/ci-runs-where.tsv` now records, per workflow, where it actually executes and whether it has
+  been published, and `tools/ci-artefact-check.sh` fails on a workflow with no such row. An inert file
+  that looks like CI is worse than no file, because it gets cited as evidence that something is checked.
+- The seam lab was first confirmed locally against pinned oasdiff 1.27.0: it passes end to end, and
+  gutting the assertion block in `verify.sh` is refused at the manifest check with exit 1 before
+  anything runs. `companion-ci.yml` and both labs were then published to the companion repository,
+  where all nine jobs pass, so the seam lab and the formal lab now run on every push rather than only
+  on a laptop.
+- **Its first ever run found three bugs in the workflow itself**, none of them in the labs: gitleaks
+  needs `GITHUB_TOKEN` on pull-request events, the pinned Dafny asset named `ubuntu-20.04` where
+  4.11.0 ships `ubuntu-22.04`, and the dogfood job diffs `HEAD~1` against a depth-1 checkout. All
+  three are fixed. A workflow nobody runs accumulates defects exactly like a test nobody runs.
+
+### Fixed — a lab's result now names the artefact that produced it
+
+- **`enterprise-seam-lab/manifest.json` hashed the lab's inputs and none of its machinery.** Four
+  contracts, two producers and the lockfile were pinned; `verify.sh`, which is the oracle,
+  `producer/emit.py`, which chooses the input the recorded verdict is about, the consumer assertion and
+  driver, and `package.json` and `tsconfig.json` were not. Inverting the assertion block would have left
+  the lab printing "Enterprise seam lab passed." with every recorded hash matching and
+  `status: VERIFIED` untouched. Thirteen artefacts are pinned now, split in the manifest into `inputs`
+  and `oracle` so the distinction stays visible, with a `source_revision`.
+- New `tools/manifest-check.py`, manifest-driven and shared by both evidence labs. Each lab declares its
+  own `pins`; `check` refuses a drifted or unpinned artefact and `refresh` is a separate verb, because a
+  checker that silently rewrites what it checks is not a checker. Both `verify.sh` scripts call it
+  before doing anything, and `companion-ci.yml` gained a tool-free step for it so a drifted oracle would
+  fail the pipeline even where oasdiff or Dafny cannot be installed. The idiom is borrowed from
+  `experiments/harness/dispatch.py`, which already hashes its own probe source.
+- `formal/manifest.json` had the same omission and is fixed the same way.
+- **A separate defect the manifest work exposed.** `verify.sh` generated consumer types only from
+  `baseline.yaml`, so the book's optional-addition claim, that the consumer still compiles once the
+  field is added, was never executed against `optional-addition.yaml`. Compile evidence is now generated
+  per contract. Run against both, the consumer compiles, so the claim holds and is now tested.
+- `advise.py` emitted `"informationUri": "https://github.com/"` into every SARIF report. It now names
+  the repository.
+
+### Added — an optional ratification policy, and an honest limit stated
+
+- **`selfmodel ratify` reads an optional `ratification-policy.json` beside the intent file.** An
+  `approvers` allowlist checked against `--by`, and `require_signed_commit`, which asks git whether
+  HEAD carries a good signature. Absent by default and silent when absent, so no printed block in the
+  book moves and no existing workflow changes. Authority is checked before the model file is read,
+  because a refusal is about who is asking.
+- **The claim it replaces.** `BOOK-CONTRACT.md` listed "an agent cannot ratify: ratification requires a
+  person at a terminal" among the rules the tooling enforces. The second half was false: the command
+  requires three non-empty strings, a scope, and a matching model hash, and this repository's own tests
+  ratify non-interactively. The contract now separates the rules that are enforced from the one that is
+  a convention, the manuscript says so where a reader forms the belief, and "signature" is marked as
+  naming a recorded name rather than a cryptographic one.
+- `test_an_agent_cannot_ratify` is renamed `test_the_mcp_server_refuses_ratification`, which is what it
+  asserts. The old name promised a property the tool does not have, ninety lines below a helper that
+  ratifies programmatically.
+
+### Removed — two flags that contradicted the invariant
+
+- **`advise --fail-on any` and `gate --fail-on surface` are gone.** Both made a candidate nobody
+  ratified exit 1, which is the one thing the exit-code contract says cannot happen: "A candidate never
+  fails a build. Only a line a named person ratified, or a ceiling an owner set, may fail one."
+  `advise --fail-on` is now `ratified|none` and `gate --fail-on` is `none|violation`. Neither removed
+  value was documented in the manuscript, and neither had a single test, so the capability was
+  invisible from every surface a reader or a maintainer reads.
+- The reason they survived is worth recording, because it is a lesson about the test rather than about
+  the flag. `test_advise.test_there_is_no_option_to_fail_on_a_candidate` asserted
+  `set(action.choices) == {"ratified", "any", "none"}`. It read as a guarantee against failing on a
+  candidate and was in fact a lock holding `any` in place. It has been replaced by a behaviour test
+  that drives every advertised choice through a candidate-only workspace and asserts none of them
+  returns 1, which cannot be satisfied by renaming a flag. `test_gate` gained the equivalent.
+- `exitcodes.py` now states the predicate it means. It said "A candidate never exits non-zero" and then
+  said the candidate is surfaced at 3; three is non-zero, so the sentence was false as written and
+  invited exactly the drift below.
+
+### Fixed — the CI artefacts a reader copies
+
+- `.github/actions/coherence/action.yml` **had never been loaded by any parser.** Line 31 carried an
+  unquoted scalar containing ": ", and a stray `exit "$code"` sat among the `with:` keys of the
+  SARIF-upload step, twenty-four lines below the advise script it belonged to. Both are fixed. The
+  second was not cosmetic: without that line the advise step returned 0 for exit 1 (a ratified
+  conflict) and exit 2 (a refusal), so the one class permitted to fail a build silently passed.
+- `examples/workflows/coherence-minimal.yml` let advise's exit 3 stand as the step's status, which
+  turns a surfaced candidate into a red job. It now maps 3 to success explicitly. The chapter 7 block
+  that reproduces it was updated in the same edit.
+- `.github/workflows/companion-ci.yml` swallowed exit 2. A refusal now fails the job.
+- New: `tools/ci-artefact-check.sh`, wired into the regression guard as check 23. It parses every
+  shipped CI artefact and executes each advisory run block against a fake CLI at exit 3 and exit 4,
+  because both defects above were behavioural and a keyword search would have passed them.
+
 
 The trust pass. Every entry below is a way the tool could report success while having measured
 nothing, which makes the instruction "put `check` in your CI" unsafe to print. Behaviour changes, so
 this is a minor bump; no printed output changed, and all seven byte-verified manuscript blocks still
 match.
-
-### Repository layout — breaking for anyone who cloned 0.1.0
-
-The package moved from the clone root into `ratchet-mvp/`, so the formal lab and the enterprise seam
-lab can be published beside it and one working directory reaches all three. Install is now
-`pip install ./ratchet-mvp` from the clone root rather than `pip install -e .`, and the fixtures are
-under `ratchet-mvp/playground/`. The import path is unchanged: `coherence_ratchet` is still the
-package and `coherence-ratchet` is still the command.
-
-Two labs are published for the first time. `formal/` carries the bounded Dafny and TLA+ examples, and
-`enterprise-seam-lab/` carries the Python-to-TypeScript contract boundary. Neither shipped at 0.1.0,
-and both are referenced by the write-ups in `experiments/`.
-
-`demo.py` measured the state directory rather than the package inside it. Under 0.1.0 that silently
-returned an all-zero snapshot; under this release's new refusal it raises, which is how the defect
-was found. It now measures the package directory.
 
 ### Behaviour
 
@@ -377,20 +488,7 @@ tighten a ratio it cannot verify, which is the safe direction; re-run `init` to 
 
 The checkout-pricing fixture, the sync-marker contract for printed blocks, and the guard suite.
 
-## 0.1.0 — 2026-07-10
+## 0.1.0
 
-First public release of the reference implementation:
-
-- `measure` / `init` / `check` — the deterministic floor: function-level duplication clusters,
-  dependency cycles, coupling density, fan-in, connascence of shared literals, held against a
-  per-region budget with an owned, dated ledger (`--accept`).
-- `selfmodel derive` / `query` / `context` — the derived, queryable self-model and the
-  agent-grounding pack rendered from it.
-- `gate` — the optional LLM catalogue-matcher (offline by default; surfaces to a human, never
-  auto-blocks).
-- `prove` — the behaviour-complete proof: property-based differential testing of a proposed
-  consolidation against each original.
-- `report` — leading indicators read from the ledger (coverage, overdue items, how long the
-  ratchet has held).
-- The five-state billing playground, the consolidation/fullcontext/stampy fixtures, 58
-  experiment write-ups with their scripts, and the recorded longitudinal architecture data.
+First public release: the deterministic portfolio, the self-model truth layers, the exposure ledger,
+bounded comparison, and the experiment record.

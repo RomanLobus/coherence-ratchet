@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two utilities both normalize key-value inputs, but they are not HTTP verb shortcuts, Session verb shortcuts, or hook dispatch helpers from the sanctioned catalogue.","confidence":"high"}

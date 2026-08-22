@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "Although structurally similar, these functions intentionally implement different semantics—one returns the first match arbitrarily while the other detects duplicates and raises CookieConflictError—so merging them would obscure behavior or require awkward mode flags.", "confidence": "high"}

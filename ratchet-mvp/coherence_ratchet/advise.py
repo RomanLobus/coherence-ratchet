@@ -307,7 +307,7 @@ def to_sarif(findings: list[dict], root: str) -> dict:
         "runs": [{
             "tool": {"driver": {
                 "name": "coherence-ratchet advise",
-                "informationUri": "https://github.com/",
+                "informationUri": "https://github.com/RomanLobus/coherence-ratchet",
                 "rules": list(rules.values()),
             }},
             "results": results,
@@ -328,9 +328,10 @@ def register_cli(sub) -> None:
     p.add_argument("--model", default="coherence/selfmodel.json")
     p.add_argument("--intent", default="coherence/intent.json")
     p.add_argument("--format", choices=["text", "json", "sarif"], default="text")
-    p.add_argument("--fail-on", choices=["ratified", "any", "none"], default="ratified",
-                   help="exit 1 on a ratified conflict (default), on any finding, or never. "
-                        "There is deliberately no option to fail on a candidate")
+    p.add_argument("--fail-on", choices=["ratified", "none"], default="ratified",
+                   help="exit 1 on a ratified conflict (default), or never. There is deliberately "
+                        "no option that fails on a candidate: `any` was removed because it did "
+                        "exactly that")
 
 
 def run_cli(args) -> int:
@@ -372,7 +373,5 @@ def run_cli(args) -> int:
 
     ratified = [f for f in findings if f["class"] == RATIFIED_CONFLICT]
     if args.fail_on == "ratified" and ratified:
-        return EXIT_CROSSED
-    if args.fail_on == "any" and findings:
         return EXIT_CROSSED
     return EXIT_ADVISORY if findings else EXIT_HELD

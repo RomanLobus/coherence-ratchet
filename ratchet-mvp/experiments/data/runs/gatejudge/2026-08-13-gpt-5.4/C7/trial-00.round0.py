@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are two distinct public properties with closely related but intentionally different semantics, and merging them would likely reduce clarity more than it would reduce meaningful duplication.","confidence":"high"}

@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These thin HTTP verb wrappers are intentional public API entry points with distinct names, signatures, typing, and documentation, so the small repetition improves usability and clarity rather than warranting consolidation.","confidence":"high"}

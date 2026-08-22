@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These tiny iterator helpers intentionally expose distinct public APIs with different yielded attributes, so the minimal repetition is clear and idiomatic rather than worth abstracting.","confidence":"high"}

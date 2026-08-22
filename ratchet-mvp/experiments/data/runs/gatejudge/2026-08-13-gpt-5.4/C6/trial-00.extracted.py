@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are tiny, clear convenience methods with different public semantics, and abstracting them into a shared helper would save little while making the code less direct.", "confidence": "high"}

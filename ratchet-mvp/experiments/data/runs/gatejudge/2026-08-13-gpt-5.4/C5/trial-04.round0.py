@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"These are tiny, standard dict-like adapters with different yielded attributes, and merging them would likely reduce clarity more than it would reduce meaningful duplication.","confidence":"high"}

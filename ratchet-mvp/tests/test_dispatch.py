@@ -152,6 +152,68 @@ def test_a_probe_edit_after_the_run_is_detectable():
     assert "task_only" in verify(_probe(), out)["prompt_drift"]
 
 
+def test_a_scorer_corrected_after_the_run_does_not_invalidate_it():
+    """A prompt edit invalidates a run; a corrected scorer does not, provided the committed scores
+    came from the committed scorer. Conflating the two is what made the no-chokepoint factorial
+    read as failing its evidence class while its figures re-derived from the committed responses
+    exactly. `rescore` records which scorer produced the scores, and `verify` reports that
+    separately from the collection-time probe hash."""
+    out = tempfile.mkdtemp()
+    dispatch(_probe(), ["task_only"], trials=1, model=DATED, out_dir=out,
+             transport=_transport(), now="2026-08-11T00:00:00Z")
+
+    # Simulate a scorer corrected after collection: the manifest still pins the old hash.
+    manifest_path = os.path.join(out, "manifest.json")
+    manifest = json.load(open(manifest_path))
+    manifest["probe_sha256"] = "0" * 64
+    json.dump(manifest, open(manifest_path, "w"))
+
+    before = verify(_probe(), out)
+    assert before["probe_changed"] is True, "the collection-time hash really has moved"
+    assert before["scores_current"] is False, "nothing yet binds the scores to a scorer"
+
+    rescore(_probe(), out)
+
+    after = verify(_probe(), out)
+    assert after["probe_changed"] is True, "history is not rewritten to hide the change"
+    assert after["scores_current"] is True, "the committed scores came from the committed scorer"
+    assert after["prompt_drift"] == {}, "no prompt moved"
+
+    recorded = json.load(open(os.path.join(out, "rescore.json")))
+    assert recorded["scorer_changed_since_collection"] is True
+    assert recorded["collection_probe_sha256"] == "0" * 64
+
+
+def test_rescoring_refuses_to_overwrite_scores_a_different_scorer_produced():
+    """A superseded run is the record of what was claimed at the time. Re-scoring it in place
+    changes the numbers a write-up cites, silently, and I did exactly that during the no-chokepoint
+    repair before restoring from a backup. Rescoring the current run is unaffected, because the
+    scores it writes are the scores already there."""
+    out = tempfile.mkdtemp()
+    dispatch(_probe(), ["task_only"], trials=1, model=DATED, out_dir=out,
+             transport=_transport(), now="2026-08-11T00:00:00Z")
+    rescore(_probe(), out)
+    committed = open(os.path.join(out, "scores.json")).read()
+
+    # Re-scoring an unchanged run is a no-op and must stay allowed.
+    rescore(_probe(), out)
+    assert open(os.path.join(out, "scores.json")).read() == committed
+
+    # Now the committed scores no longer match what the scorer produces.
+    with open(os.path.join(out, "scores.json"), "w") as f:
+        f.write('{"task_only": []}\n')
+    try:
+        rescore(_probe(), out)
+    except DispatchRefused as exc:
+        assert "different scorer" in str(exc)
+    else:
+        raise AssertionError("committed scores were overwritten without being asked")
+
+    # The escape hatch exists, and says so.
+    rescore(_probe(), out, force=True)
+    assert open(os.path.join(out, "scores.json")).read() == committed
+
+
 # --- dry run ----------------------------------------------------------------
 
 def test_dry_run_prices_the_sweep_and_spends_nothing():

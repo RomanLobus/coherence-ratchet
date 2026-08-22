@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are intentional thin public API wrappers for distinct HTTP verbs with different signatures and documentation, so the small repetition preserves clarity and usability.", "confidence": "high"}

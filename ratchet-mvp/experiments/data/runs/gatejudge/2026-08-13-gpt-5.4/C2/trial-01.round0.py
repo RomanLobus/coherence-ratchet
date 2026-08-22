@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are intentional thin convenience wrappers for distinct public API entry points and HTTP verbs, with small semantic differences like Session.get setting allow_redirects by default, so merging them would reduce clarity more than it would remove meaningful duplication.", "confidence": "high"}

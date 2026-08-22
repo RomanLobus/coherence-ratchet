@@ -1,0 +1,128 @@
+name: coherence
+description: >-
+  Hold the line a team ratified, and fail when the grounding coding agents read stops describing the
+  code. Advises on everything nobody ratified, and fails on none of it.
+
+# This is deliberately not a detection action. Detectors are commodity and several are better
+# resourced than this one. The step no other action performs is `ground --check`: it fails the pull
+# request when the file the agents read no longer describes the code they are editing.
+#
+# The rule that governs every step below: a candidate never fails a build. Only a line a named person
+# ratified, or a ceiling an owner set, may turn this job red.
+
+inputs:
+  path:
+    description: The package directory to measure. The analyser names a package after this directory.
+    required: true
+  budgets:
+    description: Ceilings file written by `coherence-ratchet init`.
+    default: coherence/budgets.json
+  model:
+    default: coherence/selfmodel.json
+  intent:
+    default: coherence/intent.json
+  grounding-target:
+    description: The file coding agents read. AGENTS.md is the vendor-neutral convention.
+    default: AGENTS.md
+  diff-base:
+    description: Base ref for the change under review. Empty disables the advise step.
+    default: ''
+  fail-on:
+    description: "advise failure policy: ratified (default) or none. There is no 'candidate', and no flag that fails on one."
+    default: ratified
+  check-grounding:
+    description: Fail when the committed grounding block no longer matches the tree.
+    default: 'true'
+  version:
+    default: 0.6.0
+  python-version:
+    default: '3.12'
+
+outputs:
+  exit-code:
+    description: The exit code of the ratchet check step.
+    value: ${{ steps.ratchet.outputs.code }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: install
+      shell: bash
+      run: python -m pip install "coherence-ratchet==${{ inputs.version }}"
+
+    - name: version
+      shell: bash
+      run: coherence-ratchet --version
+
+    - name: the grounding agents read is current
+      # The differentiated step. Nobody else ships a CI check that fails because an agent's
+      # instructions went stale.
+      if: inputs.check-grounding == 'true'
+      shell: bash
+      run: |
+        coherence-ratchet ground "${{ inputs.path }}" \
+          --model "${{ inputs.model }}" \
+          --intent "${{ inputs.intent }}" \
+          --target "${{ inputs.grounding-target }}" \
+          --check
+
+    - name: hold the line
+      id: ratchet
+      shell: bash
+      run: |
+        set +e
+        coherence-ratchet check "${{ inputs.path }}" --budgets "${{ inputs.budgets }}"
+        code=$?
+        set -e
+        echo "code=$code" >> "$GITHUB_OUTPUT"
+        # 4 is NOT MEASURED. A pipeline that green-lights on 4 has exactly the defect this practice
+        # exists to name, so it is treated as a failure here and the reason is printed.
+        if [ "$code" -eq 4 ]; then
+          echo "::error::the ratchet could not measure; a failure must not read as a clean result"
+          exit 1
+        fi
+        exit "$code"
+
+    - name: advise on the change
+      if: inputs.diff-base != ''
+      shell: bash
+      run: |
+        set +e
+        # SARIF first, so the findings land on the diff whatever the exit code turns out to be.
+        # A ratified conflict is an error and a candidate is a note, never a warning: an
+        # unratified heuristic must not read as a violation in anybody's review UI.
+        coherence-ratchet advise "${{ inputs.path }}" \
+          --diff "${{ inputs.diff-base }}...HEAD" \
+          --model "${{ inputs.model }}" \
+          --intent "${{ inputs.intent }}" \
+          --fail-on none --format sarif > coherence-advise.sarif 2>/dev/null
+        coherence-ratchet advise "${{ inputs.path }}" \
+          --diff "${{ inputs.diff-base }}...HEAD" \
+          --model "${{ inputs.model }}" \
+          --intent "${{ inputs.intent }}" \
+          --fail-on "${{ inputs.fail-on }}"
+        code=$?
+        set -e
+        if [ "$code" -eq 4 ]; then
+          echo "::error::advise could not read the change; that is not a clean result"
+          exit 1
+        fi
+        # 3 means findings were surfaced for a human. That is not a failure, by design.
+        if [ "$code" -eq 3 ]; then
+          echo "::notice::coherence findings surfaced for judgement; no ratified line was crossed"
+          exit 0
+        fi
+        # Everything else propagates. Without this line 1 (a ratified conflict) and 2 (a refusal)
+        # both exited 0, so the one class permitted to fail a build silently passed.
+        exit "$code"
+
+    - name: upload advise findings
+      if: inputs.diff-base != '' && always() && hashFiles('coherence-advise.sarif') != ''
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: coherence-advise.sarif
+        category: coherence-advise

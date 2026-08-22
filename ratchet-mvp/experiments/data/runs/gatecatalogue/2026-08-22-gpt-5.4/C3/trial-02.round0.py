@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These helpers differ only by which hashlib function they call, and that does not match any of the sanctioned patterns for verb shortcuts or hook dispatch.","confidence":"high"}

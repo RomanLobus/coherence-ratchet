@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two utility converters share some validation structure but are not module/session HTTP verb shortcuts or hook dispatch helpers from the sanctioned catalogue.","confidence":"high"}

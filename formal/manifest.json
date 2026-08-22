@@ -27,6 +27,10 @@
     {
       "path": "Unsafe.cfg",
       "sha256": "29215873025c90cd308636e0daab94cc56c2ffef89e757843565880e7875380b"
+    },
+    {
+      "path": "verify.sh",
+      "sha256": "602d8f67a66df1835b6e182faa5f099884234c69bfa13ac734296596f81a9de1"
     }
   ],
   "results": [
@@ -58,5 +62,19 @@
       "property": "an unrestricted publication step preserves consumer compatibility",
       "result": "TLC produced a two-state counterexample"
     }
-  ]
+  ],
+  "pins": {
+    "inputs": [
+      "DiscountRounding.dfy",
+      "DiscountRoundingMutation.dfy",
+      "ContractRollout.tla",
+      "Safe.cfg",
+      "Unsafe.cfg"
+    ],
+    "oracle": [
+      "verify.sh"
+    ],
+    "derived": []
+  },
+  "source_revision": "cfa049aee43a8975162bd229aeae01470f79a3cf"
 }

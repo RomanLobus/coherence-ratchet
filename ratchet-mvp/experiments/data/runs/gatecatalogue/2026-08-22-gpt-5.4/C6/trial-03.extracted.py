@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two utility methods are similar list-building helpers over different cookie attributes, but they do not match any of the sanctioned patterns for verb shortcuts or hook dispatch.","confidence":"high"}

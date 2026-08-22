@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "Although structurally similar, these functions intentionally produce different output types and one has mapping-specific handling via items(), so merging them would likely obscure their distinct API contracts more than it would reduce meaningful duplication.", "confidence": "high"}

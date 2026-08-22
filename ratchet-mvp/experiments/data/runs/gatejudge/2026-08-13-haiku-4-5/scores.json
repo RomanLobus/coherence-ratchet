@@ -1,0 +1,298 @@
+{
+  "C1": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "All functions follow an identical pattern of delegating to a shared `request()` function with only the HTTP method and parameter signatures varying, making them candidates for a factory function or decorator-based approach.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are near-identical wrappers around a common `request()` call that differ only in HTTP method and parameter signatures, making them ideal candidates for consolidation into a factory function or decorator pattern.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are near-identical wrappers around a common `request()` function that differ only in the HTTP method name and parameter signatures, making them ideal candidates for consolidation via a factory function or decorator pattern.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are near-identical wrappers around a common `request()` function that differ only in the HTTP method string and parameters passed, making them prime candidates for a factory function or decorator-based approach.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are nearly identical wrappers around a common `request()` function that differ only in the HTTP method string and parameter signatures, making them strong candidates for a factory pattern or a single parameterized implementation.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "CONSOLIDATE"
+    }
+  ],
+  "C2": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally separate convenience methods at different API levels (module-level and class-level) serving different purposes with different signatures and behaviors (e.g., Session.get sets allow_redirects default), making consolidation inappropriate despite structural similarity.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally separate API entry points with different signatures and purposes: Session methods encapsulate state and defaults (like allow_redirects), while module-level functions provide convenient shortcuts that delegate to a generic request function.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally separate convenience methods at different API levels (module-level and class-level) with different signatures and behaviors (e.g., Session.get sets allow_redirects default), serving distinct use cases in the requests library's public API design.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally separate convenience functions at different API levels (Session methods vs module-level functions) with different signatures and responsibilities that serve distinct use cases.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally distinct API entry points serving different purposes: Session methods are instance-based HTTP operations, while module-level functions are convenience wrappers, each requiring separate signatures and documentation.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C3": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are identical except for the hash algorithm used, which can be parameterized into a single generic function that accepts a hash constructor.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are identical except for the hash algorithm parameter, which can be abstracted into a single generic function taking the algorithm as an argument.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are identical except for the hash algorithm used, which can be parameterized into a single generic function that accepts a hash constructor, eliminating unnecessary duplication while maintaining clarity.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are identical except for the hash algorithm used, which can be parameterized into a single factory function or generic wrapper that accepts the algorithm as an argument.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These functions are identical except for the hash algorithm parameter, which can be abstracted into a single generic function that accepts the algorithm as an argument.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "CONSOLIDATE"
+    }
+  ],
+  "C4": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical filtering logic with only the return behavior differing, so a single parameterized function with an optional conflict-checking flag would eliminate the duplication while preserving the distinct error-handling behavior.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical filtering logic with only a difference in handling duplicates (arbitrarily choose vs. raise error), which can be cleanly parameterized into a single implementation with an optional `allow_duplicates` parameter.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical filtering logic with only a difference in duplicate-handling behavior that can be parameterized, making consolidation straightforward and reducing maintenance burden.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both methods share identical filtering logic (name, domain, path matching) and only differ in duplicate-handling strategy, which can be parameterized with an optional boolean flag to reduce code duplication.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical filtering logic with only a difference in duplicate-handling behavior that could be extracted into a parameterized helper function or a single function with an optional strict mode parameter.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "CONSOLIDATE"
+    }
+  ],
+  "C5": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These methods intentionally provide parallel dict-like interfaces for different cookie attributes (name vs. value), and consolidating them would obscure their distinct semantic purposes despite structural similarity.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally separate dict-like methods that extract different attributes (name vs. value) from cookies, following the standard dictionary iterator protocol where iterkeys(), itervalues(), and iteritems() are distinct by design.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally parallel implementations of dict-like iterator methods that follow the standard Python dict interface pattern (iterkeys, itervalues, iteritems), where each method has distinct semantics and should remain separate for API clarity and maintainability.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions have identical structure and only differ in which cookie attribute they yield, making them ideal candidates for a shared implementation using a helper function or a parameterized approach.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These are intentionally parallel implementations following the dict-like interface pattern where iterkeys(), itervalues(), and iteritems() are separate methods by design, and consolidation would obscure the semantic distinction between iterating over names versus values.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C6": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions follow identical logic of extracting and deduplicating a single attribute from cookies, which can be unified into a single parameterized method or a helper function.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions implement identical logic to extract unique values from cookies (only the attribute name differs), making them prime candidates for a single parameterized helper method.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions implement identical logic for extracting unique values from cookie attributes, differing only in which attribute is accessed, so a single parameterized function would eliminate duplication and improve maintainability.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions implement identical logic to extract a unique attribute from cookies, differing only in which attribute they access, making them ideal candidates for a parameterized helper function.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions follow identical logic for extracting unique values from cookie attributes and can be unified into a single parameterized method.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "CONSOLIDATE"
+    }
+  ],
+  "C7": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These properties check distinct redirect semantics (all redirects vs. permanent-only redirects) and consolidation would obscure the semantic difference despite syntactic similarity.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These properties have distinct semantic purposes (general redirect detection vs. permanent redirect detection) with intentionally different status code sets, making separate implementations appropriate despite structural similarity.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These properties serve distinct semantic purposes with different status code checks, and consolidation would obscure the specific intent of each method despite similar structural patterns.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These properties have distinct semantic purposes and different status code checks, making separate implementations clearer and more maintainable than a parameterized consolidation.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "SANCTIONED"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "These properties serve distinct semantic purposes with different status code checks, and consolidating them would reduce clarity and force callers to interpret results rather than use self-documenting property names.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "SANCTIONED"
+    }
+  ],
+  "C8": [
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical None-handling and validation logic but differ only in output format (OrderedDict vs list), which can be unified with a helper function or a single parameterized implementation.",
+      "trial": "trial-00.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical input validation logic and differ only in output format (OrderedDict vs list), which could be unified with a helper function or a single parameterized function.",
+      "trial": "trial-01.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "medium",
+      "parsed": true,
+      "reason": "Both functions share identical input validation logic and differ only in output format (OrderedDict vs list), which could be unified with a parameter or helper function to reduce duplication.",
+      "trial": "trial-02.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical null-check and type-validation logic with only the final transformation differing (OrderedDict vs list conversion), making them suitable candidates for a shared helper or parameterized implementation.",
+      "trial": "trial-03.extracted.py",
+      "verdict": "CONSOLIDATE"
+    },
+    {
+      "confidence": "high",
+      "parsed": true,
+      "reason": "Both functions share identical input validation logic and differ only in their final transformation step, which could be parameterized or abstracted into a shared helper.",
+      "trial": "trial-04.extracted.py",
+      "verdict": "CONSOLIDATE"
+    }
+  ]
+}

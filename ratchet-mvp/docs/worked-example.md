@@ -5,7 +5,7 @@ This walks the packaged CLI across two real substrates:
 1. the **staged billing slice** (`playground/_states/`), where a change is applied five ways and the
    signals move as the code decays and is then consolidated — every number below is reproducible;
 2. a **public repo** (Flask), to show the architecture and change-history signals on code nobody
-   wrote for this project.
+   wrote for this book.
 
 Every command is copy-pasteable from `ratchet-mvp/`. Install first:
 
@@ -153,7 +153,7 @@ This is an MVP, and the docs say so plainly:
 - Duplication detection is O(n²) over function fingerprints — fine for a subsystem, not tuned for a
   monorepo.
 - Duplication is a **proxy**. It catches copy-and-diverge, which is the common AI-assisted failure, but
-  it is not a semantic judge. The method puts an LLM semantic pass and a behaviour-complete proof
+  it is not a semantic judge. The book's method puts an LLM semantic pass and a behaviour-complete proof
   *above* this deterministic floor; they are not in this tool.
 - The hyperliminal and contagion signals need real git history to mean anything.
 

@@ -4,27 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coherence-ratchet"
-version = "0.5.0"
+version = "0.6.0"
 description = "A coherence-debt ratchet that separates observed structure, ratified intent, exposure decisions, and bounded behavioural evidence."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Roman Lobus" }]
-keywords = ["coherence", "technical-debt", "architecture", "ratchet", "ci", "ai-assisted", "coherence-debt"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Topic :: Software Development :: Quality Assurance",
-]
+keywords = ["coherence", "technical-debt", "architecture", "ratchet", "ci", "ai-assisted"]
 dependencies = []
 
 [project.optional-dependencies]
+# The README's dev-install line referenced an extra that did not exist, and pytest was undeclared.
 dev = ["pytest>=7"]
 
 [project.urls]

@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These are hash-specific encoding-and-digest helpers, which do not match any of the sanctioned shortcut or hook-dispatch patterns in the catalogue.","confidence":"high"}

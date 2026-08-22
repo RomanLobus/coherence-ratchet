@@ -1,0 +1,1 @@
+{"verdict": "SANCTIONED", "reason": "These are tiny, clear convenience methods for different cookie attributes, and consolidating them via a parameterized helper would likely reduce readability more than it would meaningfully reduce maintenance cost.", "confidence": "high"}

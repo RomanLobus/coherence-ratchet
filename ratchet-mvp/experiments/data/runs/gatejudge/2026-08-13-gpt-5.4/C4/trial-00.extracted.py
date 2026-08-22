@@ -1,0 +1,1 @@
+{"verdict":"SANCTIONED","reason":"Although structurally similar, the two methods intentionally encode different semantics—one returns the first match arbitrarily while the other detects and raises on duplicate matches—so merging them would obscure behavior or add awkward control flow.","confidence":"high"}

@@ -229,7 +229,7 @@ def _coupling(root: str) -> tuple[int, int]:
 
 def measure(root: str, *, sim_threshold: float | None = None) -> Snapshot:
     resolve_root(root)
-    # The default is the shipped constant, so every existing call site and every published fixture
+    # The default is the shipped constant, so every existing call site and every fixture the book
     # prints reads exactly as before. A reader who has run `calibrate` passes their own value.
     threshold = SIM_THRESHOLD if sim_threshold is None else sim_threshold
     funcs = _collect_functions(root)

@@ -1,0 +1,1 @@
+{"pattern": "NONE", "reason": "These two helpers normalize key/value inputs into different output forms and do not match any sanctioned verb-shortcut or hook-dispatch pattern in the catalogue.", "confidence": "high"}

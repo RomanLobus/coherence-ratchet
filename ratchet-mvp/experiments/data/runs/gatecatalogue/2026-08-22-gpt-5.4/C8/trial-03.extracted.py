@@ -1,0 +1,1 @@
+{"pattern":"NONE","reason":"These two functions are generic conversion helpers with similar validation logic, not module/session verb shortcuts or hook dispatch helpers from the sanctioned catalogue.","confidence":"high"}

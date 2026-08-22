@@ -1,0 +1,1 @@
+{"pattern": "NONE", "reason": "These two methods are both cookie lookup helpers with different conflict-handling semantics, which does not match any of the sanctioned verb-shortcut or hook-dispatch patterns.", "confidence": "high"}
