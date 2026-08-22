@@ -8,13 +8,58 @@
     "typescript": "5.9.3"
   },
   "artefacts": [
-    {"path": "contracts/baseline.yaml", "sha256": "2887e0447edf68cc5843516546920c1e356c62380d46a16bbd0e6fcaeda87a29"},
-    {"path": "contracts/optional-addition.yaml", "sha256": "f82d5ac3ab6c2e887a14cc8690bd0aa94fc2431c0848edec2adebd2a0c61a103"},
-    {"path": "contracts/breaking-rename.yaml", "sha256": "5d08fe356d07d4bff0a815a589735cf12500c056819ee3ccd0eb84be7800f42e"},
-    {"path": "contracts/semantic-change.yaml", "sha256": "1d201ffcf267dced512f12f52cf89ecac2bfed8c07eba9801ea3ceda29df1609"},
-    {"path": "producer/pricing.py", "sha256": "28d9d44785838238751614a7d78c29ac53afcf8e147737d10187323972e0a973"},
-    {"path": "producer/pricing_half_even.py", "sha256": "66e86b2480a167751911249b7fbe741e6a79ea1f201aaba635ce64aa795654c9"},
-    {"path": "consumer/package-lock.json", "sha256": "8563174eb8f883bfa816e9cea4c900efae282227b310df3915b773c67c32d15b"}
+    {
+      "path": "contracts/baseline.yaml",
+      "sha256": "2887e0447edf68cc5843516546920c1e356c62380d46a16bbd0e6fcaeda87a29"
+    },
+    {
+      "path": "contracts/optional-addition.yaml",
+      "sha256": "f82d5ac3ab6c2e887a14cc8690bd0aa94fc2431c0848edec2adebd2a0c61a103"
+    },
+    {
+      "path": "contracts/breaking-rename.yaml",
+      "sha256": "5d08fe356d07d4bff0a815a589735cf12500c056819ee3ccd0eb84be7800f42e"
+    },
+    {
+      "path": "contracts/semantic-change.yaml",
+      "sha256": "1d201ffcf267dced512f12f52cf89ecac2bfed8c07eba9801ea3ceda29df1609"
+    },
+    {
+      "path": "producer/pricing.py",
+      "sha256": "28d9d44785838238751614a7d78c29ac53afcf8e147737d10187323972e0a973"
+    },
+    {
+      "path": "producer/pricing_half_even.py",
+      "sha256": "66e86b2480a167751911249b7fbe741e6a79ea1f201aaba635ce64aa795654c9"
+    },
+    {
+      "path": "consumer/package-lock.json",
+      "sha256": "8563174eb8f883bfa816e9cea4c900efae282227b310df3915b773c67c32d15b"
+    },
+    {
+      "path": "verify.sh",
+      "sha256": "8f574e30527d17be76d73ea8bbcb336d8e0a4cef8282aa59c818738140980209"
+    },
+    {
+      "path": "producer/emit.py",
+      "sha256": "8ebb62423e8905a5e9ea5009a5a22884797afa0549469a0335bfd4043c544f76"
+    },
+    {
+      "path": "consumer/src/consumer.ts",
+      "sha256": "3da3203904c19dd32c6b1a01abae75ad25bbe8c7c6b7f94922d480e83abe2ea3"
+    },
+    {
+      "path": "consumer/src/test-consumer.ts",
+      "sha256": "c89fcddc41a2b89503929d0c8cc674c955aa97dfeae7960728516113d7283755"
+    },
+    {
+      "path": "consumer/package.json",
+      "sha256": "77aca7d7e43622e31d8253f03f634f4f7a585d0f11a3162005b12d1328afc001"
+    },
+    {
+      "path": "consumer/tsconfig.json",
+      "sha256": "f9e7b0e173eb47c43c56f8c8682acadb84927fd3d70abe3e7d6304e21294fd3c"
+    }
   ],
   "results": [
     {
@@ -31,5 +76,28 @@
       "schema_result": "NO_BREAKING_CHANGE_FOUND",
       "consumer_result": "REFUTED at five milli-cents: expected one cent, received zero"
     }
-  ]
+  ],
+  "source_revision": "cfa049aee43a8975162bd229aeae01470f79a3cf",
+  "pins": {
+    "inputs": [
+      "contracts/baseline.yaml",
+      "contracts/optional-addition.yaml",
+      "contracts/breaking-rename.yaml",
+      "contracts/semantic-change.yaml",
+      "producer/pricing.py",
+      "producer/pricing_half_even.py",
+      "consumer/package-lock.json"
+    ],
+    "oracle": [
+      "verify.sh",
+      "producer/emit.py",
+      "consumer/src/consumer.ts",
+      "consumer/src/test-consumer.ts",
+      "consumer/package.json",
+      "consumer/tsconfig.json"
+    ],
+    "derived": [
+      "consumer/src/generated/schema.d.ts"
+    ]
+  }
 }
