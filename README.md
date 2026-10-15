@@ -67,10 +67,10 @@ it runs offline.
 ## Install
 
 ```sh
-git clone --branch v0.5.0 --depth 1 https://github.com/RomanLobus/coherence-ratchet
+git clone --branch v0.6.0 --depth 1 https://github.com/RomanLobus/coherence-ratchet
 cd coherence-ratchet
 python3 -m pip install ./ratchet-mvp
-python3 ratchet-mvp/tests/run.py        # 201 tests, offline
+python3 ratchet-mvp/tests/run.py        # 211 tests, offline
 ```
 
 The package sits in `ratchet-mvp/`; `formal/` and `enterprise-seam-lab/` sit beside it, so one
@@ -108,11 +108,16 @@ coherence-ratchet ground "$P" --model coherence/selfmodel.json --intent coherenc
 coherence-ratchet ground "$P" --check --model coherence/selfmodel.json --intent coherence/intent.json
 ```
 
-The measurement behind this is in the repository rather than only asserted. In
-`ratchet-mvp/experiments/no-chokepoint.md`, agents making a cross-cutting change to a system whose
-second total-computation site sat outside their context got it right **0 times out of 30**; the same
-agents given the derived pack got it right **30 out of 30**, replicated on a second vendor's model.
-Two controls sit beside it: telling an agent to reuse what it can already see moves reuse by
+The measurement behind this is in the repository rather than only asserted, including the part that
+went against the tool. In `ratchet-mvp/experiments/no-chokepoint.md`, agents making a cross-cutting
+change to a system whose second total-computation site sat outside their context got it right
+**0 times out of 30**, on two vendors' models. Given the derived pack together with the source it
+pointed at, they got it right **30 out of 30**. The four-cell factorial of 22 August 2026 then split
+those two factors: the source alone also scored **30 out of 30**, so that separation measures access
+to the code, not the pack. Naming the second site without its source never produced a correct change,
+and on one family the agent rebuilt the module it could not read and deleted live code in 26 trials of
+30. A pack should therefore name only what the agent can retrieve. The agents in that run had no
+search tools; naming plus a retrieval tool the agent can call is untested. Two controls sit beside it: telling an agent to reuse what it can already see moves reuse by
 nothing, and a fabricated pack naming helpers that do not exist is ignored when the agent can read
 the code and followed when it cannot. The write-up states models, dates, trial counts, confidence
 intervals and limits, including a scoring defect that was found, corrected, and disclosed because it
@@ -241,7 +246,7 @@ own.
 
 Output formats are frozen per minor version, and `ratchet-mvp/CHANGELOG.md` records every change to
 a printed format, so anyone quoting this tool's output can pin the version that produced it and tell
-a version gap from a defect. **This release is 0.5.0.**
+a version gap from a defect. **This release is 0.6.0.**
 
 The longitudinal readings are pinned to named commits rather than re-sampled:
 `ratchet-mvp/experiments/` holds the write-ups and `ratchet-mvp/experiments/data/` the measured
